@@ -1,0 +1,7 @@
+{
+  "name": "Copy of IA para Agentes Inmobiliarios",
+  "description": "Una web para formar a agentes inmobiliarios en el uso de inteligencia artificial. Vende un curso premium con acceso perpetuo.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
