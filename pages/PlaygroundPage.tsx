@@ -4,13 +4,12 @@ import AdCopyGenerator from '../components/ai-tools/AdCopyGenerator';
 import ImageGenerator from '../components/ai-tools/ImageGenerator';
 import EmailComposer from '../components/ai-tools/EmailComposer';
 import MarketInsightsGenerator from '../components/ai-tools/MarketInsightsGenerator';
-import ValuationAssistant from '../components/ai-tools/ValuationAssistant';
 import BioOptimizer from '../components/ai-tools/BioOptimizer';
 import NegotiationSimulator from '../components/ai-tools/NegotiationSimulator';
 import LeadScoringAssistant from '../components/ai-tools/LeadScoringAssistant';
 import MortgageCalculator from '../components/ai-tools/MortgageCalculator';
 
-type Tool = 'adCopy' | 'image' | 'email' | 'marketInsights' | 'valuation' | 'bio' | 'negotiation' | 'leadScoring' | 'mortgageCalculator';
+type Tool = 'adCopy' | 'image' | 'email' | 'marketInsights' | 'bio' | 'negotiation' | 'leadScoring' | 'mortgageCalculator';
 
 const ExternalLinkIcon: React.FC = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -32,8 +31,6 @@ const PlaygroundPage: React.FC = () => {
         return <NegotiationSimulator />;
       case 'adCopy':
         return <AdCopyGenerator />;
-      case 'valuation':
-        return <ValuationAssistant />;
       case 'bio':
         return <BioOptimizer />;
       case 'image':
@@ -81,7 +78,6 @@ const PlaygroundPage: React.FC = () => {
               <TabButton tool="leadScoring" label={t('playground.leadScoringAssistant.title')} />
               <TabButton tool="negotiation" label={t('playground.negotiationSimulator.title')} />
               <TabButton tool="adCopy" label={t('playground.adCopyGenerator.title')} />
-              <TabButton tool="valuation" label={t('playground.valuationAssistant.title')} />
               <TabButton tool="bio" label={t('playground.bioOptimizer.title')} />
               <TabButton tool="image" label={t('playground.imageGenerator.title')} />
               <TabButton tool="email" label={t('playground.emailComposer.title')} />

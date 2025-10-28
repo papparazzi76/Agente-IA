@@ -31,10 +31,10 @@ export interface Module {
       url: string;
     }[];
   };
-  video?: {
+  videos?: {
     title: LocalizedString;
     embedUrl: string;
-  };
+  }[];
   flashcards?: Flashcard[];
 }
 

@@ -127,7 +127,13 @@ const ModulePage: React.FC = () => {
                 </div>
                 {module.content.mediaSrc && (
                     <div className="flex items-center justify-center">
-                        <img src={module.content.mediaSrc} alt="Visual content" className="rounded-lg shadow-lg max-h-80 w-auto"/>
+                        <img 
+                          src={module.content.mediaSrc} 
+                          alt="Visual content" 
+                          className="rounded-lg shadow-lg max-h-80 w-auto"
+                          loading="lazy"
+                          decoding="async"
+                        />
                     </div>
                 )}
             </div>
@@ -170,22 +176,24 @@ const ModulePage: React.FC = () => {
             )}
         </div>
         
-        {module.video && (
-            <section className="bg-gray-900/50 rounded-lg p-8 md:p-12 shadow-2xl border border-tech-blue/20 text-center">
-                <h2 className="font-poppins text-3xl md:text-4xl text-pure-white mb-8">{module.video.title[language]}</h2>
-                <div className="max-w-4xl mx-auto aspect-video rounded-xl overflow-hidden shadow-2xl shadow-tech-cyan/20 border-2 border-tech-blue/40">
-                    <iframe 
-                        src={module.video.embedUrl} 
-                        title={module.video.title[language]}
-                        frameBorder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowFullScreen
-                        className="w-full h-full"
-                        loading="lazy"
-                    ></iframe>
-                </div>
-                <CompletionButton moduleId={module.id} itemId="video">{t('module.markVideoComplete')}</CompletionButton>
-            </section>
+        {module.videos && module.videos.length > 0 && (
+            module.videos.map((video, index) => (
+                <section key={index} className="bg-gray-900/50 rounded-lg p-8 md:p-12 shadow-2xl border border-tech-blue/20 text-center">
+                    <h2 className="font-poppins text-3xl md:text-4xl text-pure-white mb-8">{video.title[language]}</h2>
+                    <div className="max-w-4xl mx-auto aspect-video rounded-xl overflow-hidden shadow-2xl shadow-tech-cyan/20 border-2 border-tech-blue/40">
+                        <iframe 
+                            src={video.embedUrl} 
+                            title={video.title[language]}
+                            frameBorder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowFullScreen
+                            className="w-full h-full"
+                            loading="lazy"
+                        ></iframe>
+                    </div>
+                    <CompletionButton moduleId={module.id} itemId={`video-${index}`}>{t('module.markVideoComplete', { number: index + 1 })}</CompletionButton>
+                </section>
+            ))
         )}
 
         {module.flashcards && module.flashcards.length > 0 && (

@@ -37,10 +37,24 @@ export const module4: Module = {
         }
       ],
     },
-    video: {
-      title: { es: "Tutorial: Configurando tu Primer Chatbot Inmobiliario sin Código", pt: "Tutorial: Configurando o seu Primeiro Chatbot Imobiliário sem Código" },
-      embedUrl: "https://www.youtube.com/embed/n_MGPa2igcE",
-    },
+    videos: [
+      {
+        title: { es: "Tutorial: Configurando tu Primer Chatbot Inmobiliario sin Código", pt: "Tutorial: Configurando o seu Primeiro Chatbot Imobiliário sem Código" },
+        embedUrl: "https://www.youtube.com/embed/n_MGPa2igcE",
+      },
+      {
+        title: { es: "Video Tutorial Adicional 1", pt: "Vídeo Tutorial Adicional 1" },
+        embedUrl: "https://www.youtube.com/embed/C_Yq-mD_AMA",
+      },
+      {
+        title: { es: "Video Tutorial Adicional 2", pt: "Vídeo Tutorial Adicional 2" },
+        embedUrl: "https://www.youtube.com/embed/C_Yq-mD_AMA",
+      },
+      {
+        title: { es: "Video Tutorial Adicional 3", pt: "Vídeo Tutorial Adicional 3" },
+        embedUrl: "https://www.youtube.com/embed/C_Yq-mD_AMA",
+      }
+    ],
     flashcards: [
         {
           question: { es: "¿Qué es un chatbot?", pt: "O que é um chatbot?" },
@@ -175,7 +189,7 @@ export const module4: Module = {
         {
           question: { es: "¿Qué es la 'analítica conversacional'?", pt: "O que é a 'analítica conversacional'?" },
           answer: { es: "Es el análisis de los datos de las conversaciones del chatbot para extraer insights de negocio, como cuáles son las preguntas más frecuentes o los puntos de fricción de los clientes.", pt: "É a análise dos dados das conversas do chatbot para extrair insights de negócio, como quais são as perguntas mais frequentes ou os pontos de atrito dos clientes." },
-          explanation: { es: "Las conversaciones de tu chatbot son una mina de oro de datos. Analizarlas te puede revelar qué información falta en tu web (si mucha gente pregunta lo mismo), qué características de las propiedades son las más demandadas, o en qué punto del flujo de calificación abandonan más usuarios. Esta información es vital para mejorar tanto el chatbot como tu estrategia de marketing general.", pt: "As conversas do seu chatbot são uma mina de ouro de dados. Analisá-las pode revelar-lhe que informação falta no seu site (se muita gente pergunta o mesmo), que características dos imóveis são as mais procuradas, ou em que ponto do fluxo de qualificação mais utilizadores desistem. Esta informação é vital para melhorar tanto o chatbot como a sua estratégia de marketing geral." }
+          explanation: { es: "Las conversaciones de tu chatbot son una mina de oro de datos. Analizarlas te puede revelar qué información falta en tu web (si mucha gente pregunta lo mismo), qué características de las propiedades son las más demandadas, o en qué punto del flujo de calificación abandonan más usuarios. Esta información es vital para mejorar tanto el chatbot como tu estrategia de marketing general.", pt: "As conversas do seu chatbot são uma mina de ouro de dados. Analisá-las pode revelar-lhe que informação falta no seu site (se muita gente pergunta o mesmo), que características dos imóveis são as mais procuradas, ou em que ponto do fluxo de qualificação mais utilizadores desistem. Esta informação é vital para mejorar tanto o chatbot como a sua estratégia de marketing geral." }
         },
         {
           question: { es: "Un usuario pregunta al bot: '¿Cuál es el mejor colegio de la zona?'. ¿Cómo debería responder?", pt: "Um utilizador pergunta ao bot: 'Qual é a melhor escola da zona?'. Como deve responder?" },
@@ -199,8 +213,8 @@ export const module4: Module = {
         },
         {
           question: { es: "¿Cómo puede un chatbot mejorar el SEO de una web?", pt: "Como um chatbot pode melhorar o SEO de um site?" },
-          answer: { es: "Indirectamente. Al mejorar la experiencia del usuario y aumentar el 'tiempo en página', envía señales positivas a Google de que el sitio es valioso.", pt: "Indiretamente. Ao melhorar a experiência do utilizador e aumentar o 'tempo na página', envia sinais positivos ao Google de que o site é valioso." },
-          explanation: { es: "El SEO no solo se trata de palabras clave. Google valora mucho las 'métricas de usuario'. Si un visitante entra en tu web, interactúa con el chatbot durante 5 minutos y navega a varias páginas que el bot le sugiere, esto le dice a Google que el usuario encontró el sitio útil y relevante. Este 'engagement' (interacción) puede contribuir a mejorar tu ranking a largo plazo.", pt: "O SEO не se trata apenas de palavras-chave. O Google valoriza muito as 'métricas do utilizador'. Se um visitante entra no seu site, interage com o chatbot durante 5 minutos e navega para várias páginas que o bot lhe sugere, isto diz ao Google que o utilizador achou o site útil e relevante. Este 'engagement' (interação) pode contribuir para melhorar a sua classificação a longo prazo." }
+          answer: { es: "Indirectamente. Al mejorar la experiencia del usuario y aumentar el 'tiempo en página', envía señales positivas a Google de que el sitio es valioso.", pt: "Indiretamente. Ao mejorar a experiência do utilizador e aumentar o 'tempo na página', envia sinais positivos ao Google de que o site é valioso." },
+          explanation: { es: "El SEO no solo se trata de palabras clave. Google valora mucho las 'métricas de usuario'. Si un visitante entra en tu web, interactúa con el chatbot durante 5 minutos y navega a varias páginas que el bot le sugiere, esto le dice a Google que el usuario encontró el sitio útil y relevante. Este 'engagement' (interacción) puede contribuir a mejorar tu ranking a largo plazo.", pt: "O SEO не se trata apenas de palavras-chave. O Google valoriza muito as 'métricas do utilizador'. Se um visitante entra no seu site, interage com o chatbot durante 5 minutos e navega para várias páginas que o bot lhe sugere, isto diz ao Google que o utilizador achou o site útil e relevante. Este 'engagement' (interação) pode contribuir para mejorar a sua classificação a longo prazo." }
         },
         {
           question: { es: "¿Qué es la 'intención de salida' (exit intent)?", pt: "O que é a 'intenção de saída' (exit intent)?" },
@@ -219,28 +233,8 @@ export const module4: Module = {
         },
         {
           question: { es: "¿Cómo se personaliza un chatbot según la fuente del tráfico?", pt: "Como se personaliza um chatbot de acordo com a fonte do tráfego?" },
-          answer: { es: "Detectando de dónde viene el usuario (ej. un anuncio de Facebook sobre alquileres) y adaptando el mensaje de bienvenida ('¡Hola! ¿Buscas alquilar?').", pt: "Detetando de onde vem o utilizador (ex. um anúncio do Facebook sobre arrendamentos) e adaptando a mensagem de boas-vindas ('Olá! Procura arrendar?')." },
-          explanation: { es: "La personalización contextual mejora la experiencia. Si un usuario hace clic en un anuncio específico para 'vender tu casa', la landing page puede tener un chatbot cuyo mensaje de bienvenida sea '¡Hola! ¿Listo para descubrir cuánto vale tu casa?'. Este mensaje es mucho más relevante y efectivo que un saludo genérico.", pt: "A personalização contextual melhora a experiência. Se um utilizador clica num anúncio específico para 'vender a sua casa', a landing page pode ter um chatbot cuja mensagem de boas-vindas seja 'Olá! Pronto para descobrir quanto vale a sua casa?'. Esta mensagem é muito mais relevante e eficaz do que uma saudação genérica." }
-        },
-        {
-          question: { es: "¿Qué es la 'persistencia de la sesión' en un chatbot?", pt: "O que é a 'persistência da sessão' num chatbot?" },
-          answer: { es: "Es la capacidad del bot para recordar la conversación actual si el usuario navega a otra página del sitio y luego vuelve al chat.", pt: "É a capacidade do bot para recordar a conversa atual se o utilizador navegar para outra página do site e depois voltar ao chat." },
-          explanation: { es: "Sin persistencia de sesión, cada vez que el usuario cambia de página, el chat se reinicia, lo cual es muy frustrante. Con persistencia, el usuario puede estar en medio de una conversación, ir a ver una ficha de propiedad y luego volver al chat para continuar exactamente donde lo dejó. Es una característica técnica fundamental para una buena experiencia de usuario.", pt: "Sem persistência da sessão, cada vez que o utilizador muda de página, o chat reinicia, o que é muito frustrante. Com persistência, o utilizador pode estar a meio de uma conversa, ir ver uma ficha de imóvel e depois voltar ao chat para continuar exatamente onde parou. É uma característica técnica fundamental para uma boa experiência do utilizador." }
-        },
-        {
-          question: { es: "¿Qué es un 'knowledge gap' en la analítica de un chatbot?", pt: "O que é um 'knowledge gap' na analítica de um chatbot?" },
-          answer: { es: "Es un 'vacío de conocimiento'. Se refiere a una pregunta que los usuarios hacen frecuentemente pero que el chatbot no sabe cómo responder.", pt: "É um 'vazio de conhecimento'. Refere-se a uma pergunta que os utilizadores fazem frequentemente mas que o chatbot não sabe como responder." },
-          explanation: { es: "Las herramientas de analítica de chatbots agrupan las preguntas no respondidas. Si un agente ve que 50 personas han preguntado '¿se admiten mascotas en la propiedad X?', eso es un 'knowledge gap'. Identificar estos vacíos es la forma más efectiva de mejorar el bot: simplemente se añade esa pregunta y su respuesta a la base de conocimiento para la próxima vez.", pt: "As ferramentas de analítica de chatbots agrupam as perguntas não respondidas. Se um agente vê que 50 pessoas perguntaram 'permitem-se animais de estimação no imóvel X?', isso é um 'knowledge gap'. Identificar estes vazios é a forma mais eficaz de melhorar o bot: simplesmente adiciona-se essa pergunta e a sua resposta à base de conhecimento para a próxima vez." }
-        },
-        {
-          question: { es: "¿Puede un chatbot realizar una pre-calificación hipotecaria?", pt: "Um chatbot pode realizar uma pré-qualificação hipotecária?" },
-          answer: { es: "Puede hacer preguntas muy básicas (ingresos, ahorros, tipo de contrato) para dar una estimación muy preliminar, pero siempre debe redirigir a un profesional hipotecario.", pt: "Pode fazer perguntas muito básicas (rendimentos, poupanças, tipo de contrato) para dar uma estimativa muito preliminar, mas deve sempre redirecionar para um profissional de crédito hipotecário." },
-          explanation: { es: "Un bot puede actuar como un primer filtro. Podría decir: 'Para darte una idea aproximada, ¿cuáles son tus ingresos netos mensuales?'. Basado en la respuesta, podría usar una fórmula simple para dar un rango de presupuesto. Sin embargo, es CRUCIAL que el bot termine con un descargo de responsabilidad: 'Esto es solo una estimación. Para una pre-aprobación real, necesitas hablar con un asesor financiero. ¿Quieres que te ponga en contacto con uno?'.", pt: "Um bot pode atuar como um primeiro filtro. Poderia dizer: 'Para lhe dar uma ideia aproximada, quais são os seus rendimentos líquidos mensais?'. Com base na resposta, poderia usar uma fórmula simples para dar uma faixa de orçamento. No entanto, é CRUCIAL que o bot termine com um aviso legal: 'Isto é apenas uma estimativa. Para uma pré-aprovação real, precisa de falar com um consultor financeiro. Quer que o ponha em contacto com um?'." }
-        },
-        {
-          question: { es: "¿Cómo se gestiona la privacidad (GDPR) con un chatbot?", pt: "Como se gere a privacidade (RGPD) com um chatbot?" },
-          answer: { es: "Informando al usuario de que está hablando con un bot, pidiendo consentimiento explícito antes de recopilar datos personales y enlazando a la política de privacidad.", pt: "Informando o utilizador de que está a falar com um bot, pedindo consentimento explícito antes de recolher dados pessoais e fornecendo um link para a política de privacidade." },
-          explanation: { es: "El cumplimiento del GDPR es obligatorio. Antes de que el bot pida un nombre, email o teléfono, debe presentar una casilla de verificación o un botón que diga 'Acepto la política de privacidad y que mis datos sean procesados'. El mensaje de bienvenida también debe ser transparente. Guardar las transcripciones de chat de forma segura y permitir a los usuarios solicitar su eliminación también son parte del cumplimiento.", pt: "O cumprimento do RGPD é obrigatório. Antes de o bot pedir um nome, e-mail ou telefone, deve apresentar uma caixa de verificação ou um botão que diga 'Aceito a política de privacidade e que os meus dados sejam processados'. A mensagem de boas-vindas também deve ser transparente. Guardar as transcrições de chat de forma segura e permitir que os utilizadores solicitem a sua eliminação também fazem parte do cumprimento." }
+          answer: { es: "Detectando de dónde viene el usuario (ej. un anuncio de Facebook sobre alquileres) y adaptando el mensaje de bienvenida.", pt: "Detetando de onde vem o utilizador (ex. um anúncio do Facebook sobre arrendamentos) e adaptando a mensagem de boas-vindas." },
+          explanation: { es: "Si un usuario llega a tu web haciendo clic en un anuncio específico, sabes cuál es su interés inicial. Se puede configurar el chatbot para que lo reconozca. En lugar de un saludo genérico, el bot podría decir: '¡Hola! Veo que vienes de nuestro anuncio sobre alquileres para estudiantes. ¿Te gustaría ver las mejores opciones que tenemos cerca de la universidad?'. Esta personalización inmediata aumenta drásticamente la relevancia y la conversión.", pt: "Se um utilizador chega ao seu site clicando num anúncio específico, sabe qual é o seu interesse inicial. Pode-se configurar o chatbot para o reconhecer. Em vez de uma saudação genérica, o bot poderia dizer: 'Olá! Vejo que vem do nosso anúncio sobre arrendamentos para estudantes. Gostaria de ver as melhores opções que temos perto da universidade?'. Esta personalização imediata aumenta drasticamente a relevância e a conversão." }
         }
-      ]
+    ]
 };

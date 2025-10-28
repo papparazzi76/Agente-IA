@@ -38,10 +38,24 @@ export const module3: Module = {
         }
       ],
     },
-    video: {
-      title: { es: "Demostración Práctica: El Poder del Diseño de Interiores con IA", pt: "Demonstração Prática: O Poder do Design de Interiores com IA" },
-      embedUrl: "https://www.youtube.com/embed/5j5U55yN_7s",
-    },
+    videos: [
+      {
+        title: { es: "Demostración Práctica: El Poder del Diseño de Interiores con IA", pt: "Demonstração Prática: O Poder do Design de Interiores com IA" },
+        embedUrl: "https://www.youtube.com/embed/5j5U55yN_7s",
+      },
+      {
+        title: { es: "Video Tutorial Adicional 1", pt: "Vídeo Tutorial Adicional 1" },
+        embedUrl: "https://www.youtube.com/embed/C_Yq-mD_AMA",
+      },
+      {
+        title: { es: "Video Tutorial Adicional 2", pt: "Vídeo Tutorial Adicional 2" },
+        embedUrl: "https://www.youtube.com/embed/C_Yq-mD_AMA",
+      },
+      {
+        title: { es: "Video Tutorial Adicional 3", pt: "Vídeo Tutorial Adicional 3" },
+        embedUrl: "https://www.youtube.com/embed/C_Yq-mD_AMA",
+      }
+    ],
     flashcards: [
       {
         question: { es: "¿Qué es el 'home staging'?", pt: "O que é 'home staging'?" },
@@ -166,7 +180,7 @@ export const module3: Module = {
       {
         question: { es: "¿Cómo se puede usar la IA para generar diferentes opciones de reforma?", pt: "Como se pode usar a IA para gerar diferentes opções de remodelação?" },
         answer: { es: "Tomando una foto de la habitación a reformar (ej. una cocina vieja) y pidiéndole a la IA que la rediseñe con diferentes estilos: 'rediseña esta cocina con un estilo moderno', 'ahora con un estilo rústico'.", pt: "Tirando uma foto do cómodo a remodelar (ex. uma cozinha velha) e pedindo à IA que a redesenhe com diferentes estilos: 'redesenha esta cozinha com um estilo moderno', 'agora com um estilo rústico'." },
-        explanation: { es: "Esta es una herramienta de visualización muy potente para propiedades a reformar. Permite al comprador ver el potencial de la inversión. El agente puede presentar un 'antes' y varios 'después' generados por la IA, mostrando cómo podría quedar la cocina con una isla central, o cómo el salón podría abrirse al jardín. Esto ayuda al comprador a superar la barrera de una propiedad anticuada.", pt: "Esta é uma ferramenta de visualização muito potente para propriedades a remodelar. Permite ao comprador ver o potencial do investimento. O agente pode apresentar um 'antes' e vários 'depois' gerados pela IA, mostrando como a cozinha poderia ficar com uma ilha central, ou como a sala poderia abrir-se para o jardim. Isto ajuda o comprador a superar a barreira de uma propriedade antiquada." }
+        explanation: { es: "Esta es una herramienta de visualización muy potente para propiedades a reformar. Permite al comprador ver el potencial de la inversión. El agente puede presentar un 'antes' y varios 'después' generados por la IA, mostrando cómo podría quedar la cocina con una isla central, o cómo el salón podría abrirse al jardín. Esto ayuda al comprador a superar la barrera de una propiedad anticuada.", pt: "Esta é uma ferramenta de visualização muito potente para propriedades a remodelar. Permite ao comprador ver o potencial do investimento. O agente pode apresentar um 'antes' e vários 'depois' gerados pela IA, mostrando como a cozinha poderia ficar com uma ilha central, ou como a sala poderia abrir-se para o jardim. Isto ajuda o comprador a superar a barrreira de uma propriedade antiquada." }
       },
       {
         question: { es: "Describe el proceso de 'textura virtual' con IA.", pt: "Descreva o processo de 'textura virtual' com IA." },

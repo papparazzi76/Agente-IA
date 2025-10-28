@@ -27,7 +27,9 @@ const PROGRESS_STORAGE_KEY = 'agenteIA-moduleProgress';
 const getCompletableItems = (module: Module): string[] => {
     const items: string[] = [];
     items.push('content');
-    if (module.video) items.push('video');
+    if (module.videos) {
+        module.videos.forEach((_, index) => items.push(`video-${index}`));
+    }
     if (module.flashcards && module.flashcards.length > 0) items.push('flashcards');
     if (module.resources.downloads.length > 0) items.push('resources');
     return items;

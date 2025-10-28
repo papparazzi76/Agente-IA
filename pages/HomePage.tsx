@@ -6,7 +6,7 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const CheckIcon: React.FC = () => (
-    <svg className="w-6 h-6 text-tech-cyan mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <svg className="w-6 h-6 text-tech-cyan mr-4 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
 );
 
 const HomePage: React.FC = () => {
@@ -62,26 +62,60 @@ const HomePage: React.FC = () => {
       {/* Features Section */}
       <section ref={featuresRef} id="features" className={`py-20 transition-all duration-1000 ease-out ${featuresVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="container mx-auto px-6">
-            <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-pure-white font-poppins">{t('home.featuresTitle')}</h2>
-                <p className="text-lg text-gray-400 mt-2 max-w-2xl mx-auto">{t('home.featuresSubtitle')}</p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto sequential-fade-in">
-                <div className="bg-gray-800/30 p-6 rounded-lg card-glow-border" style={{ animationDelay: '100ms' }}>
-                    <h3 className="text-xl font-semibold mb-2 flex items-center"><CheckIcon /> {t('home.feature1Title')}</h3>
-                    <p className="text-gray-400" dangerouslySetInnerHTML={{ __html: t('home.feature1Text') }}></p>
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+                <div className="sequential-fade-in">
+                    <h2 className="text-3xl md:text-4xl font-bold text-pure-white font-poppins mb-6">{t('home.featuresTitle')}</h2>
+                    <p className="text-lg text-gray-400 mb-8">{t('home.featuresSubtitle')}</p>
+                    <ul className="space-y-6">
+                        <li className="flex items-start" style={{ animationDelay: '100ms' }}>
+                            <CheckIcon />
+                            <div>
+                                <h3 className="text-xl font-semibold mb-1">{t('home.feature1Title')}</h3>
+                                <p className="text-gray-400" dangerouslySetInnerHTML={{ __html: t('home.feature1Text') }}></p>
+                            </div>
+                        </li>
+                        <li className="flex items-start" style={{ animationDelay: '200ms' }}>
+                            <CheckIcon />
+                            <div>
+                                <h3 className="text-xl font-semibold mb-1">{t('home.feature2Title')}</h3>
+                                <p className="text-gray-400" dangerouslySetInnerHTML={{ __html: t('home.feature2Text') }}></p>
+                            </div>
+                        </li>
+                        <li className="flex items-start" style={{ animationDelay: '300ms' }}>
+                            <CheckIcon />
+                            <div>
+                                <h3 className="text-xl font-semibold mb-1">{t('home.feature3Title')}</h3>
+                                <p className="text-gray-400" dangerouslySetInnerHTML={{ __html: t('home.feature3Text') }}></p>
+                            </div>
+                        </li>
+                        <li className="flex items-start" style={{ animationDelay: '400ms' }}>
+                            <CheckIcon />
+                            <div>
+                                <h3 className="text-xl font-semibold mb-1">{t('home.feature4Title')}</h3>
+                                <p className="text-gray-400" dangerouslySetInnerHTML={{ __html: t('home.feature4Text') }}></p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div className="bg-gray-800/30 p-6 rounded-lg card-glow-border" style={{ animationDelay: '200ms' }}>
-                    <h3 className="text-xl font-semibold mb-2 flex items-center"><CheckIcon /> {t('home.feature2Title')}</h3>
-                    <p className="text-gray-400" dangerouslySetInnerHTML={{ __html: t('home.feature2Text') }}></p>
-                </div>
-                <div className="bg-gray-800/30 p-6 rounded-lg card-glow-border" style={{ animationDelay: '300ms' }}>
-                    <h3 className="text-xl font-semibold mb-2 flex items-center"><CheckIcon /> {t('home.feature3Title')}</h3>
-                    <p className="text-gray-400" dangerouslySetInnerHTML={{ __html: t('home.feature3Text') }}></p>
-                </div>
-                <div className="bg-gray-800/30 p-6 rounded-lg card-glow-border" style={{ animationDelay: '400ms' }}>
-                    <h3 className="text-xl font-semibold mb-2 flex items-center"><CheckIcon /> {t('home.feature4Title')}</h3>
-                    <p className="text-gray-400" dangerouslySetInnerHTML={{ __html: t('home.feature4Text') }}></p>
+                <div className="relative h-80 md:h-96 w-full flex items-center justify-center mt-12 md:mt-0">
+                    <img 
+                        src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/recursos/digital-banner.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJyZWN1cnNvcy9kaWdpdGFsLWJhbm5lci5wbmciLCJpYXQiOjE3NjE2NTYxMjYsImV4cCI6MTc5MzE5MjEyNn0.R8eSBs68D26gIx3o_JqxyX3BNmllDD3S199FxpJDOBQ" 
+                        alt="Digital Banner Resource"
+                        className="relative z-10 w-full max-w-md rounded-lg shadow-2xl shadow-tech-blue/20 border border-tech-blue/30 transform transition-transform hover:scale-105"
+                        loading="lazy" decoding="async"
+                    />
+                    <img 
+                        src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/recursos/movil.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJyZWN1cnNvcy9tb3ZpbC5wbmciLCJpYXQiOjE3NjE2NTYxNzgsImV4cCI6MTc5MzE5MjE3OH0.01nw2lxZLNb8rewv2zH8Y90IteC4uB_rlPB1DiF_iqg" 
+                        alt="Mobile Resource"
+                        className="absolute z-20 bottom-[-15%] left-[-5%] w-28 rounded-lg shadow-lg transform -rotate-12 transition-transform hover:scale-110 hover:rotate-[-15deg]"
+                        loading="lazy" decoding="async"
+                    />
+                    <img 
+                        src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/recursos/flyer.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJyZWN1cnNvcy9mbHllci5wbmciLCJpYXQiOjE3NjE2NTYxNTgsImV4cCI6MTc5MzE5MjE1OH0.SFP_EGX4gICBmiC79UEGhAG5dFPvj_coXmJvol6Jy9E" 
+                        alt="Flyer Resource"
+                        className="absolute z-0 top-[-15%] right-[-5%] w-40 rounded-lg shadow-lg transform rotate-12 transition-transform hover:scale-110 hover:rotate-[15deg]"
+                        loading="lazy" decoding="async"
+                    />
                 </div>
             </div>
         </div>

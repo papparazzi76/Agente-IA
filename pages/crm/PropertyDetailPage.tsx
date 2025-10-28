@@ -4,7 +4,7 @@ import { useCRM } from '../../contexts/CRMContext';
 import { Property } from '../../types';
 import AIToolModal from '../../components/crm/AIToolModal';
 
-type AiTool = 'adCopy' | 'valuation';
+type AiTool = 'adCopy';
 
 const PropertyDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -77,10 +77,10 @@ const PropertyDetailPage: React.FC = () => {
                 {property.photos && property.photos.length > 0 && (
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div className="md:col-span-2">
-                            <img src={property.photos[0]} alt="Main" className="w-full h-96 object-cover rounded-lg"/>
+                            <img src={property.photos[0]} alt="Main" className="w-full h-96 object-cover rounded-lg" loading="lazy" decoding="async"/>
                         </div>
                         {property.photos.slice(1).map((photo, index) => (
-                             <img key={index} src={photo} alt={`View ${index + 1}`} className="w-full h-48 object-cover rounded-lg"/>
+                             <img key={index} src={photo} alt={`View ${index + 1}`} className="w-full h-48 object-cover rounded-lg" loading="lazy" decoding="async"/>
                         ))}
                      </div>
                 )}
@@ -118,7 +118,6 @@ const PropertyDetailPage: React.FC = () => {
                             <h3 className="text-xl font-bold font-poppins text-tech-cyan mb-4">Asistente IA</h3>
                             <div className="space-y-3">
                                 <button onClick={() => setActiveTool('adCopy')} className="w-full text-left bg-gray-700 p-3 rounded-lg hover:bg-gray-600 transition-colors">Generar Anuncios</button>
-                                <button onClick={() => setActiveTool('valuation')} className="w-full text-left bg-gray-700 p-3 rounded-lg hover:bg-gray-600 transition-colors">Asistente de Valoración (CMA)</button>
                             </div>
                         </div>
                     </aside>
@@ -130,7 +129,6 @@ const PropertyDetailPage: React.FC = () => {
                     property={property}
                     onClose={() => setActiveTool(null)}
                     onSaveDescription={(text) => handleSaveFromTool({ description: text })}
-                    onSaveNotes={(text) => handleSaveFromTool({ description: (property.description || '') + '\n\n--- VALORACIÓN IA ---\n' + text })}
                 />
             )}
         </>

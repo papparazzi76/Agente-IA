@@ -38,15 +38,29 @@ export const module2: Module = {
         }
       ],
     },
-    video: {
-      title: { es: "Explicación: ¿Qué son los Modelos de Valoración Automatizada (AVM)?", pt: "Explicação: O que são os Modelos de Avaliação Automatizada (AVM)?" },
-      embedUrl: "https://www.youtube.com/embed/i-c4a03i2AY",
-    },
+    videos: [
+      {
+        title: { es: "Explicación: ¿Qué son los Modelos de Valoración Automatizada (AVM)?", pt: "Explicação: O que são os Modelos de Avaliação Automatizada (AVM)?" },
+        embedUrl: "https://www.youtube.com/embed/i-c4a03i2AY",
+      },
+      {
+        title: { es: "Video Tutorial Adicional 1", pt: "Vídeo Tutorial Adicional 1" },
+        embedUrl: "https://www.youtube.com/embed/C_Yq-mD_AMA",
+      },
+      {
+        title: { es: "Video Tutorial Adicional 2", pt: "Vídeo Tutorial Adicional 2" },
+        embedUrl: "https://www.youtube.com/embed/C_Yq-mD_AMA",
+      },
+      {
+        title: { es: "Video Tutorial Adicional 3", pt: "Vídeo Tutorial Adicional 3" },
+        embedUrl: "https://www.youtube.com/embed/C_Yq-mD_AMA",
+      }
+    ],
     flashcards: [
         {
           question: { es: "¿Qué es un AVM (Modelo de Valoración Automatizada)?", pt: "O que é um AVM (Modelo de Avaliação Automatizada)?" },
           answer: { es: "Es un algoritmo de IA que estima el valor de una propiedad analizando bases de datos de propiedades comparables, datos de mercado y características del inmueble.", pt: "É um algoritmo de IA que estima o valor de uma propriedade analisando bases de dados de imóveis comparáveis, dados de mercado e características do imóvel." },
-          explanation: { es: "Un AVM utiliza técnicas de machine learning, como el análisis de regresión, para encontrar patrones en grandes volúmenes de datos. Considera factores como ventas recientes en la zona, características de la propiedad (m², habitaciones), y datos públicos. Su principal ventaja es la velocidad, ya que puede generar una estimación de valor en segundos, a diferencia de una tasación tradicional que puede tardar días.", pt: "Um AVM utiliza técnicas de machine learning, como a análise de regressão, para encontrar padrões em grandes volumes de dados. Considera fatores como vendas recentes na zona, características da propriedade (m², quartos), e dados públicos. A sua principal vantagem é a velocidade, pois pode gerar uma estimativa de valor em segundos, ao contrário de uma avaliação tradicional que pode demorar dias." }
+          explanation: { es: "Un AVM utiliza técnicas de machine learning, como el análisis de regresión, para encontrar patrones en grandes volúmenes de datos. Considera factores como ventas recientes en la zona, características de la propiedad (m², habitaciones), y datos públicos. Su principal ventaja es la velocidad, ya que puede generar una estimación de valor en segundos, a diferencia de una tasación tradicional que puede tardar días.", pt: "Um AVM utiliza técnicas de machine learning, como a análise de regressão, para encontrar padrões em grandes volumes de dados. Considera fatores como ventas recentes na zona, características da propriedade (m², quartos), e dados públicos. A sua principal vantagem é a velocidade, pois pode gerar uma estimativa de valor em segundos, ao contrário de uma avaliação tradicional que pode demorar dias." }
         },
         {
           question: { es: "¿Qué es un CMA (Análisis Comparativo de Mercado)?", pt: "O que é uma CMA (Análise Comparativa de Mercado)?" },
@@ -81,7 +95,7 @@ export const module2: Module = {
         {
           question: { es: "¿Qué es un 'modelo hedónico'?", pt: "O que é um 'modelo hedónico'?" },
           answer: { es: "Es un tipo de modelo de regresión usado en valoración que asume que el precio de una casa es la suma del valor de cada una de sus características individuales (ubicación, tamaño, vistas, etc.).", pt: "É um tipo de modelo de regressão usado na avaliação que assume que o preço de uma casa é a soma do valor de cada uma das suas características individuais (localização, tamanho, vistas, etc.)." },
-          explanation: { es: "El modelo hedónico intenta asignar un precio implícito a cada atributo. Por ejemplo, puede determinar que la característica 'vistas al mar' añade un 15% al valor de una propiedad en comparación con una idéntica sin vistas. Los AVM utilizan estos modelos para realizar ajustes precisos entre la propiedad a valorar y sus comparables.", pt: "O modelo hedónico tenta atribuir um preço implícito a cada atributo. Por exemplo, pode determinar que a característica 'vistas para o mar' acrescenta 15% ao valor de uma propriedade em comparação com uma idêntica sem vistas. Os AVM utilizam estes modelos para fazer ajustes precisos entre a propriedade a avaliar e os seus comparáveis." }
+          explanation: { es: "El modelo hedónico intenta asignar un precio implícito a cada atributo. Por ejemplo, puede determinar que la característica 'vistas al mar' añade un 15% al valor de una propiedad en comparación con una idéntica sin vistas. Los AVM utilizan estos modelos para realizar ajustes precisos entre la propiedad a valorar y sus comparables.", pt: "O modelo hedónico tenta atribuir um preço implícito a cada atributo. Por exemplo, pode determinar que a característica 'vistas para o mar' acrescenta 15% ao valor de uma propriedade em comparação com uma idêntica sem vistas. Os AVM utilizam estes modelos para fazer ajustes precisos entre la propriedade a avaliar e os seus comparáveis." }
         },
         {
           question: { es: "¿Cómo influye la ubicación en el valor?", pt: "Como a localização influencia o valor?" },
@@ -101,7 +115,7 @@ export const module2: Module = {
         {
           question: { es: "¿Cómo puede la IA analizar la calidad de las reformas de una foto?", pt: "Como a IA pode analisar a qualidade das remodelações de uma foto?" },
           answer: { es: "Mediante 'visión por computador' (Computer Vision). La IA puede identificar si una cocina tiene electrodomésticos de gama alta, encimeras de mármol o un diseño moderno, y asignar un valor a esa reforma.", pt: "Através da 'visão computacional' (Computer Vision). A IA pode identificar se uma cozinha tem eletrodomésticos de gama alta, bancadas de mármore ou um design moderno, e atribuir um valor a essa remodelação." },
-          explanation: { es: "Esta es una capacidad avanzada de los AVM más modernos. En lugar de solo tener un campo 'reformado: sí/no', la IA analiza las imágenes del anuncio. Puede reconocer marcas, materiales y estilos, y puntuar la calidad de la reforma de 1 a 10. Esto permite una valoración mucho más precisa que tiene en cuenta la inversión real realizada en la propiedad.", pt: "Esta é uma capacidade avançada dos AVM mais modernos. Em vez de ter apenas um campo 'remodelado: sim/não', a IA analisa as imagens do anúncio. Pode reconhecer marcas, materiais e estilos, e pontuar a qualidade da remodelação de 1 a 10. Isto permite uma avaliação muito mais precisa que tem em conta o investimento real realizado na propriedade." }
+          explanation: { es: "Esta es una capacidad avanzada de los AVM más modernos. En lugar de solo tener un campo 'reformado: sí/no', la IA analiza las imágenes del anuncio. Puede reconocer marcas, materiales y estilos, y puntuar la calidad de la reforma de 1 a 10. Esto permite una valoración mucho más precisa que tiene en cuenta la inversión real realizada en la propiedad.", pt: "Esta é uma capacidade avançada dos AVM mais modernos. Em vez de ter apenas um campo 'remodelado: sim/não', a IA analisa as imagens do anúncio. Pode reconocer marcas, materiais e estilos, e pontuar a qualidade da remodelação de 1 a 10. Isto permite uma avaliação muito mais precisa que tem em conta a inversão real realizada na propriedade." }
         },
         {
           question: { es: "¿Qué es el 'sesgo algorítmico' en la valoración?", pt: "O que é o 'viés algorítmico' na avaliação?" },
@@ -176,7 +190,7 @@ export const module2: Module = {
         {
           question: { es: "¿Qué es el 'valor de alquiler' estimado por un AVM?", pt: "O que é o 'valor de arrendamento' estimado por um AVM?" },
           answer: { es: "Es una estimación de la renta mensual que una propiedad podría generar, basada en los precios de alquiler de propiedades comparables en la misma zona.", pt: "É uma estimativa da renda mensal que uma propriedade poderia gerar, baseada nos preços de arrendamento de propriedades comparáveis na mesma zona." },
-          explanation: { es: "Además de valorar para la venta, muchos AVM también pueden valorar para el alquiler. Esto es muy útil para clientes inversores. El AVM analiza los alquileres recientes de propiedades similares y estima una renta mensual probable. Esto permite al inversor calcular la rentabilidad bruta anual ( (renta mensual * 12) / precio de compra ) y tomar una decisión de inversión informada.", pt: "Além de avaliar para venda, muitos AVM também podem avaliar para arrendamento. Isto é muito útil para clientes investidores. O AVM analisa os arrendamentos recentes de propriedades semelhantes e estima uma renda mensal provável. Isto permite ao investidor calcular a rentabilidade bruta anual ( (renda mensal * 12) / preço de compra ) e tomar uma decisão de investimento informada." }
+          explanation: { es: "Además de valorar para la venta, muchos AVM también pueden valorar para el alquiler. Esto es muy útil para clientes inversores. El AVM analiza los alquileres recientes de propiedades similares y estima una renta mensual probable. Esto permite al inversor calcular la rentabilidad bruta anual ( (renta mensual * 12) / precio de compra ) y tomar una decisión de inversión informada.", pt: "Além de avaliar para venda, muitos AVM também podem avaliar para arrendamento. Isto é muito útil para clientes investidores. O AVM analisa os arrendamentos recentes de propriedades semelhantes e estima uma renda mensal provável. Isto permite ao inversor calcular a rentabilidade bruta anual ( (renda mensal * 12) / preço de compra ) e tomar uma decisão de investimento informada." }
         },
         {
           question: { es: "¿Cómo puede la valoración con IA ayudar a captar una propiedad?", pt: "Como a avaliação com IA pode ajudar a angariar uma propriedade?" },
@@ -191,7 +205,7 @@ export const module2: Module = {
         {
           question: { es: "Menciona una externalidad negativa que un AVM avanzado puede detectar.", pt: "Mencione uma externalidade negativa que um AVM avançado pode detetar." },
           answer: { es: "La proximidad a fuentes de ruido como autopistas, vías de tren o aeropuertos. La IA puede aplicar un ajuste negativo al valor si la propiedad está dentro de un 'área de impacto acústico'.", pt: "A proximidade a fontes de ruído como autoestradas, linhas de comboio ou aeroportos. A IA pode aplicar um ajuste negativo ao valor se a propriedade estiver dentro de uma 'área de impacto acústico'." },
-          explanation: { es: "Los AVM modernos pueden integrar capas de datos geoespaciales muy diversas. Además del ruido, pueden detectar la proximidad a vertederos, zonas inundables, o incluso datos sobre la tasa de criminalidad de una calle. Al cuantificar el impacto de estas externalidades negativas, la valoración se vuelve mucho más precisa y realista.", pt: "Os AVM modernos podem integrar camadas de dados geoespaciais muito diversas. Além do ruído, podem detetar a proximidade a aterros, zonas inundáveis, ou até dados sobre a taxa de criminalidade de uma rua. Ao quantificar o impacto destas externalidades negativas, a avaliação torna-se muito mais precisa e realista." }
+          explanation: { es: "Los AVM modernos pueden integrar capas de datos geoespaciales muy diversas. Además del ruido, pueden detectar la proximidad a vertederos, zonas inundables, o incluso datos sobre la tasa de criminalidad de una calle. Al cuantificar el impacto de estas externalidades negativas, la valoración se vuelve mucho más precisa y realista.", pt: "Os AVM modernos podem integrar camadas de dados geoespaciais muito diversas. Além do ruído, podem detetar la proximidade a aterros, zonas inundáveis, ou até dados sobre la taxa de criminalidade de uma rua. Ao quantificar o impacto destas externalidades negativas, a avaliação torna-se muito mais precisa e realista." }
         },
         {
           question: { es: "Menciona una externalidad positiva que un AVM avanzado puede detectar.", pt: "Mencione uma externalidade positiva que um AVM avançado pode detetar." },
@@ -201,7 +215,7 @@ export const module2: Module = {
         {
           question: { es: "Una propiedad está en una 'calle peatonal'. ¿Cómo lo valora la IA?", pt: "Uma propriedade está numa 'rua pedonal'. Como a IA a avalia?" },
           answer: { es: "Puede ser positivo o negativo según el contexto. Positivo en un centro histórico (menos ruido, más encanto). Negativo si implica problemas de acceso o aparcamiento. La IA necesita datos contextuales para valorarlo correctamente.", pt: "Pode ser positivo ou negativo dependendo do contexto. Positivo num centro histórico (menos ruído, mais charme). Negativo se implica problemas de acesso ou estacionamento. A IA precisa de dados contextuais para o avaliar corretamente." },
-          explanation: { es: "Este es un ejemplo de la complejidad de la valoración. Un AVM simple podría no diferenciar. Uno avanzado, analizando el tipo de barrio, podría aprender que en zonas comerciales céntricas, la peatonalización es un plus, mientras que en zonas residenciales puede ser un problema para familias con coche. Aquí el conocimiento del agente para interpretar y matizar la valoración de la IA es fundamental.", pt: "Este é um exemplo da complexidade da avaliação. Um AVM simples poderia não diferenciar. Um avançado, analisando o tipo de bairro, poderia aprender que em zonas comerciais centrais, a pedonalização é uma mais-valia, enquanto em zonas residenciais pode ser um problema para famílias com carro. Aqui o conhecimento do agente para interpretar e matizar a avaliação da IA é fundamental." }
+          explanation: { es: "Este es un ejemplo de la complejidad de la valoración. Un AVM simple podría no diferenciar. Uno avanzado, analizando el tipo de barrio, podría aprender que en zonas comerciales céntricas, la peatonalización es un plus, mientras que en zonas residenciales puede ser un problema para familias con coche. Aquí el conocimiento del agente para interpretar y matizar la valoración de la IA es fundamental.", pt: "Este é um exemplo da complexidade da avaliação. Um AVM simples poderia não diferenciar. Um avançado, analizando o tipo de bairro, poderia aprender que em zonas comerciais centrais, a pedonalização é uma mais-valia, enquanto em zonas residenciais pode ser um problema para famílias com carro. Aqui o conhecimento do agente para interpretar e matizar a avaliação da IA é fundamental." }
         },
         {
           question: { es: "¿Qué es el 'análisis de sentimiento del barrio'?", pt: "O que é a 'análise de sentimento do bairro'?" },
@@ -237,5 +251,6 @@ export const module2: Module = {
           question: { es: "Finalmente, ¿la IA reemplazará al tasador o al agente en la valoración?", pt: "Finalmente, a IA substituirá o avaliador ou o agente na avaliação?" },
           answer: { es: "No, los potenciará. La IA es una herramienta increíble para el análisis de datos a gran escala, pero la inspección física, el conocimiento hiperlocal y el juicio profesional del experto humano siguen siendo insustituibles.", pt: "Não, irá potenciá-los. A IA é uma ferramenta incrível para a análise de dados em grande escala, mas a inspeção física, o conhecimento hiperlocal e o julgamento profissional do especialista humano continuam a ser insubstituíveis." },
           explanation: { es: "El futuro es una colaboración 'Hombre-Máquina'. La IA proporciona la base de datos objetiva y los análisis en segundos. El agente o tasador aporta el contexto, la interpretación y el conocimiento de factores intangibles que la IA no puede 'ver'. La combinación de ambos da como resultado una valoración más rápida, precisa y defendible que cualquiera de los dos por separado.", pt: "O futuro é uma colaboração 'Homem-Máquina'. A IA fornece a base de dados objetiva e as análises em segundos. O agente ou avaliador contribui com o contexto, a interpretação e o conhecimento de fatores intangíveis que a IA não consegue 'ver'. A combinação de ambos resulta numa avaliação mais rápida, precisa e defensável do que qualquer um deles isoladamente." }
+        }
       ]
 };

@@ -220,6 +220,137 @@ export const documentContents: { [key: string]: string } = {
   <p>Para la resolución de cualquier controversia o conflicto que pudiera surgir del acceso o uso del Sitio Web, ambas partes se someten expresamente, con renuncia a cualquier otro fuero que pudiera corresponderles, a los Juzgados y Tribunales de la ciudad de Valladolid.</p>
 </body>
 </html>`,
+  "guia_practica_prompts.pdf": `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Guía Práctica de Prompts para Agentes Inmobiliarios</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; padding: 2rem; max-width: 800px; margin: auto; color: #333; }
+    h1, h2, h3 { color: #000; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; border: 1px solid #ddd; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>GUÍA PRÁCTICA DE PROMPTS PARA AGENTES INMOBILIARIOS</h1>
+  <p><em>Cómo hablar con la IA para obtener resultados de alto nivel</em></p>
+
+  <h2>1. Qué es un prompt (y por qué deberías dominarlo)</h2>
+  <p>Un <strong>prompt</strong> es simplemente una instrucción o mensaje que escribes a la inteligencia artificial para indicarle qué quieres que haga.</p>
+  <p>Cuanto más claro, específico y estructurado sea tu prompt, mejores serán los resultados.</p>
+  <p>Un prompt puede ser tan simple como “escribe un texto para vender un piso" o tan avanzado como “actúa como un experto inmobiliario especializado en redacción emocional y crea una descripción breve, con tono aspiracional y estructura tipo anuncio para Idealista".</p>
+
+  <h2>2. Los tres niveles de prompts</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nivel</th>
+        <th>Tipo</th>
+        <th>Descripción</th>
+        <th>Ejemplo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Sencillo</strong></td>
+        <td>Prompt básico</td>
+        <td>Pides algo de forma directa, sin contexto ni estructura.</td>
+        <td>"Hazme un texto para vender una casa."</td>
+      </tr>
+      <tr>
+        <td><strong>2. Profesional</strong></td>
+        <td>Prompt detallado</td>
+        <td>Añades contexto, tono, estilo y objetivo.</td>
+        <td>“Redacta una descripción para un piso de 2 dormitorios en Valladolid, con un tono comercial y natural. Destaca la ubicación, la luminosidad y la reforma reciente."</td>
+      </tr>
+      <tr>
+        <td><strong>3. De sistema o experto</strong></td>
+        <td>Prompt optimizado</td>
+        <td>Defines el rol de la IA, el estilo, el público y las limitaciones.</td>
+        <td>“Actúa como un agente inmobiliario experto en marketing digital. Redacta una descripción de vivienda para un portal online en tono profesional, evitando tecnicismos, con un cierre persuasivo e invitación a visitar el inmueble."</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Estructura de un buen prompt</h2>
+  <p>Un prompt eficaz combina claridad, contexto y dirección. A continuación, se detalla una estructura recomendada:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Elemento</th>
+        <th>Qué incluye</th>
+        <th>Ejemplo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Objetivo</strong></td>
+        <td>Qué quieres conseguir</td>
+        <td>"Redactar un texto para una vivienda en venta."</td>
+      </tr>
+      <tr>
+        <td><strong>Rol de la IA</strong></td>
+        <td>Qué papel debe asumir</td>
+        <td>"Actúa como un agente inmobiliario experto en marketing."</td>
+      </tr>
+      <tr>
+        <td><strong>Tono y estilo</strong></td>
+        <td>Cómo debe sonar el resultado</td>
+        <td>"Tono natural, emocional y profesional."</td>
+      </tr>
+      <tr>
+        <td><strong>Detalles concretos</strong></td>
+        <td>Datos del inmueble o contexto</td>
+        <td>"Piso de 3 dormitorios, 2 baños, terraza y garaje, en el centro de Valladolid."</td>
+      </tr>
+      <tr>
+        <td><strong>Limitaciones o indicaciones</strong></td>
+        <td>Qué debe evitar</td>
+        <td>"Evita repetir adjetivos o usar frases cliché."</td>
+      </tr>
+      <tr>
+        <td><strong>Formato final</strong></td>
+        <td>Cómo debe presentarse el resultado</td>
+        <td>"Un texto de 150 palabras con título y llamada a la acción final."</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4. Consejos prácticos para afinar tus prompts</h2>
+  <ol>
+    <li>Define con claridad el resultado que esperas antes de escribir.</li>
+    <li>Sé específico: lugar, público, tipo de cliente, estilo del texto.</li>
+    <li>Añade contexto: indica si es para redes, web, folleto o vídeo.</li>
+    <li>Pide ejemplos o versiones alternativas si no te convence la primera respuesta.</li>
+    <li>Guarda tus mejores prompts y adáptalos a cada nuevo inmueble.</li>
+  </ol>
+
+  <h2>5. Ejemplos de prompts inmobiliarios útiles</h2>
+  <h3>Descripción de vivienda</h3>
+  <p>“Actúa como un redactor inmobiliario profesional. Crea una descripción atractiva para un piso en venta con 3 dormitorios y 2 baños en el centro de Valladolid. Usa un tono inspirador y emocional, destacando la luminosidad, la ubicación y la amplitud. Termina con una llamada a la acción para agendar visita."</p>
+  
+  <h3>Publicación para redes sociales</h3>
+  <p>"Eres un experto en marketing inmobiliario. Redacta un texto para Instagram sobre un ático con vistas al río. Usa un tono cercano, incluye emojis y hashtags relevantes del sector inmobiliario. Añade una frase tipo eslogan al final."</p>
+  
+  <h3>Guion para vídeo corto</h3>
+  <p>"Actúa como guionista de vídeos inmobiliarios. Escribe un guion de 30 segundos para un reel donde un agente presenta un chalet familiar. Estructúralo en tres partes: introducción breve, características principales y cierre con invitación a visitar la propiedad. Usa un tono natural y entusiasta."</p>
+  
+  <h3>Correo de seguimiento post-visita</h3>
+  <p>"Actúa como agente inmobiliario. Escribe un correo breve y amable para enviar a un cliente que visitó un piso ayer. Agradece su interés, resalta un punto fuerte del inmueble y pregunta si desea hacer una segunda visita o recibir opciones similares.”</p>
+  
+  <h3>Anuncio publicitario corto</h3>
+  <p>"Eres copywriter especializado en inmobiliaria. Crea tres versiones de un texto breve (menos de 20 palabras) para un anuncio online que promociona un dúplex de lujo en el centro. Usa un tono elegante y aspiracional.”</p>
+
+  <h2>6. Truco infalible</h2>
+  <p>Un humano nunca será mejor redactando prompts que una IA entrenada para ello. Si te atascas, estás poco inspirado, o incluso espeso...ve por el atajo que te lleva en tren de alta velocidad hasta tu objetivo. Pídele a tu IA de cabecera lo siguiente: “Actúa como un experto ingeniero de prompts y ayúdame a redactar el mejor prompt de sistema posible para .......”. Lo que te va a devolver no es un prompt sin más, es un manual profesional completo sobre cualquier tarea que le pidas.</p>
+
+  <h2>7. Conclusión</h2>
+  <p>Dominar el arte del <em>prompting</em> no es cuestión de suerte, sino de práctica. Cada buen prompt te acerca a resultados más precisos, rápidos y profesionales.</p>
+  <p>La inteligencia artificial no piensa por ti, pero amplifica tu capacidad de comunicar. Cuanto mejor formules tus instrucciones, mejor trabajará para ti.</p>
+</body>
+</html>`,
   "guia_google_ai_studio.pdf": `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -550,7 +681,7 @@ Tras haber establecido el porqué (beneficios estratégicos) y el qué (casos de
 Esta fase inicial es fundamental para sentar las bases del éxito, asegurando que la tecnología se alinee con los objetivos de negocio.
 1. Definir Objetivos y KPIs: Establecer de forma clara y medible qué se quiere mejorar (ej. reducir el tiempo de primera respuesta a leads a menos de 1 minuto, aumentar la tasa de conversión en un 20%).
 2. Auditoría de Datos y Procesos: La IA se alimenta de datos. Es crucial realizar una limpieza y validación de la información existente en el CRM. Se recomienda contar con un historial de leads y conversiones consistente de al menos 6-12 meses para entrenar modelos predictivos de manera efectiva.
-3. Selección de Herramientas: Evaluar y elegir las plataformas tecnológicas (CRM con IA, herramientas de automatización como Zapier/Make, modelos de lenguaje como ChatGPT) que sean compatibles y se integren de forma fluida con los sistemas actuales para evitar fricciones.
+3. Selección de Herramientas: Evaluar y elegir las plataformas tecnológicas (CRM con IA, herramientas de automatización como Zapier/Make, modelos de lenguaje como ChatGPT) que sean compatibles y se integrem de forma fluida con los sistemas actuales para evitar fricciones.
 4. Capacitación del Equipo: Educar al equipo sobre el valor y el funcionamiento del nuevo sistema es vital. Deben comprender que la IA es un aliado que automatiza tareas repetitivas para que ellos puedan centrarse en actividades de mayor valor, como la negociación y la relación personal con el cliente.
 
 5.2 Fase 2: Implementación Piloto y Medición
@@ -639,7 +770,7 @@ Tras haber establecido el porqué (beneficios estratégicos) y el qué (casos de
 Esta fase inicial es fundamental para sentar las bases del éxito, asegurando que la tecnología se alinee con los objetivos de negocio.
 1. Definir Objetivos y KPIs: Establecer de forma clara y medible qué se quiere mejorar (ej. reducir el tiempo de primera respuesta a leads a menos de 1 minuto, aumentar la tasa de conversión en un 20%).
 2. Auditoría de Datos y Procesos: La IA se alimenta de datos. Es crucial realizar una limpieza y validación de la información existente en el CRM. Se recomienda contar con un historial de leads y conversiones consistente de al menos 6-12 meses para entrenar modelos predictivos de manera efectiva.
-3. Selección de Herramientas: Evaluar y elegir las plataformas tecnológicas (CRM con IA, herramientas de automatización como Zapier/Make, modelos de lenguaje como ChatGPT) que sean compatibles y se integren de forma fluida con los sistemas actuales para evitar fricciones.
+3. Selección de Herramientas: Evaluar y elegir las plataformas tecnológicas (CRM con IA, herramientas de automatización como Zapier/Make, modelos de lenguaje como ChatGPT) que sean compatibles y se integrem de forma fluida con los sistemas actuales para evitar fricciones.
 4. Capacitación del Equipo: Educar al equipo sobre el valor y el funcionamiento del nuevo sistema es vital. Deben comprender que la IA es un aliado que automatiza tareas repetitivas para que ellos puedan centrarse en actividades de mayor valor, como la negociación y la relación personal con el cliente.
 
 5.2 Fase 2: Implementación Piloto y Medición
@@ -879,7 +1010,7 @@ La inteligencia artificial automatiza las tareas de análisis de datos más repe
   </ul>
 </body>
 </html>`,
-  "plantilla_flujo_chatbot.pdf": `<!DOCTYPE html>
+"plantilla_flujo_chatbot.pdf": `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">

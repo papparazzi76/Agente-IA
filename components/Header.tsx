@@ -40,10 +40,10 @@ const Header: React.FC = () => {
 
   return (
     <header className="bg-transparent backdrop-blur-md sticky top-0 z-50 border-b border-tech-blue/30 shadow-[0_4px_30px_rgba(0,191,255,0.1)]">
-      <nav className="container mx-auto px-6 py-4 relative">
+      <nav className="container mx-auto px-6 py-2 relative">
         <div className="flex items-center justify-between">
-          <NavLink to="/" className="text-2xl font-bold font-poppins text-pure-white transition-transform hover:scale-105 group">
-            <span className="text-glow">Agente<span className="text-tech-cyan group-hover:text-white transition-colors duration-300">IA</span></span>
+          <NavLink to="/" className="transition-transform hover:scale-105">
+            <img src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/Logo/logo-agente-ia.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL2xvZ28tYWdlbnRlLWlhLnBuZyIsImlhdCI6MTc2MTY1NTEyNCwiZXhwIjoxNzkzMTkxMTI0fQ.KxpCPaSsjvM-Nf0SFWOoEBVHiWaeicWyoA8UPQVa0J0" alt="AgenteIA Logo" className="h-24 w-auto" />
           </NavLink>
           <div className="hidden md:flex items-center space-x-4">
             <NavLink to="/" className={navLinkClass}>{t('header.navHome')}</NavLink>
@@ -51,7 +51,6 @@ const Header: React.FC = () => {
             {currentUser ? (
               <>
                 <NavLink to="/dashboard" className={navLinkClass}>{t('header.navDashboard')}</NavLink>
-                <NavLink to="/crm" className={navLinkClass}>CRM</NavLink>
                 <NavLink to="/playground" className={navLinkClass}>{t('header.navPlayground')}</NavLink>
                 {currentUser.role === 'admin' && (
                   <NavLink to="/admin" className={navLinkClass}>{t('header.navAdmin')}</NavLink>
@@ -94,7 +93,6 @@ const Header: React.FC = () => {
           {currentUser ? (
             <>
               <NavLink to="/dashboard" className={navLinkClass} onClick={closeMenu}>{t('header.navDashboard')}</NavLink>
-              <NavLink to="/crm" className={navLinkClass} onClick={closeMenu}>CRM</NavLink>
               <NavLink to="/playground" className={navLinkClass} onClick={closeMenu}>{t('header.navPlayground')}</NavLink>
               {currentUser.role === 'admin' && (
                   <NavLink to="/admin" className={navLinkClass} onClick={closeMenu}>{t('header.navAdmin')}</NavLink>

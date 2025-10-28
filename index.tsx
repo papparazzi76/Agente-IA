@@ -4,7 +4,6 @@ import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { ProgressProvider } from './contexts/ProgressContext';
-import { CRMProvider } from './contexts/CRMContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -17,9 +16,7 @@ root.render(
     <LanguageProvider>
       <AuthProvider>
         <ProgressProvider>
-          <CRMProvider>
-            <App />
-          </CRMProvider>
+          <App />
         </ProgressProvider>
       </AuthProvider>
     </LanguageProvider>

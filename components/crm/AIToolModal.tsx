@@ -1,17 +1,15 @@
 import React from 'react';
 import { Property } from '../../types';
 import AdCopyGenerator from '../ai-tools/AdCopyGenerator';
-import ValuationAssistant from '../ai-tools/ValuationAssistant';
 
 interface AIToolModalProps {
-    tool: 'adCopy' | 'valuation';
+    tool: 'adCopy';
     property: Property;
     onClose: () => void;
     onSaveDescription: (text: string) => void;
-    onSaveNotes: (text: string) => void;
 }
 
-const AIToolModal: React.FC<AIToolModalProps> = ({ tool, property, onClose, onSaveDescription, onSaveNotes }) => {
+const AIToolModal: React.FC<AIToolModalProps> = ({ tool, property, onClose, onSaveDescription }) => {
     const renderTool = () => {
         switch (tool) {
             case 'adCopy':
@@ -23,20 +21,6 @@ const AIToolModal: React.FC<AIToolModalProps> = ({ tool, property, onClose, onSa
                             features: property.features,
                         }}
                         onSave={onSaveDescription}
-                    />
-                );
-            case 'valuation':
-                 return (
-                    <ValuationAssistant
-                        initialData={{
-                            address: property.address,
-                            propertyType: property.type,
-                            area: String(property.area),
-                            bedrooms: String(property.bedrooms),
-                            bathrooms: String(property.bathrooms),
-                            features: property.features,
-                        }}
-                        onSave={onSaveNotes}
                     />
                 );
             default:
