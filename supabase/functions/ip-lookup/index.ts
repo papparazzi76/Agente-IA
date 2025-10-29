@@ -1,5 +1,6 @@
 // FIX: Corrected the Supabase Edge Function type reference to use the recommended esm.sh CDN. The previous unpkg.com URL was failing to resolve, causing type errors like "Cannot find name 'Deno'".
-/// <reference types="https://esm.sh/@supabase/functions-js@2.4.1/src/edge-runtime.d.ts" />
+// FIX: The versioned URL for the Supabase Edge Function type reference was failing to resolve. Using the non-versioned URL as recommended by Supabase documentation to load Deno types correctly.
+/// <reference types="https://esm.sh/@supabase/functions-js/src/edge-runtime.d.ts" />
 
 // supabase/functions/ip-lookup/index.ts
 //
