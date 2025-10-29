@@ -1,13 +1,14 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useLanguage } from '../contexts/LanguageContext';
+import { supabase } from '../supabase';
 
 const pricingTiers = [
   { level: 5, countries: ["España", "Panamá", "Uruguay", "Chile", "Portugal"], price: 197 },
   { level: 4, countries: ["Costa Rica", "Argentina", "República Dominicana", "México"], price: 160 },
   { level: 3, countries: ["Brasil", "Colombia", "Paraguay", "Perú"], price: 130 },
   { level: 2, countries: ["Ecuador", "Guatemala", "El Salvador"], price: 100 },
-  { level: 1, countries: ["Bolivia", "Nicaragua", "Honduras", "Haití"], price: 70 },
+  { level: 1, countries: ["Bolivia", "Nicaragua", "Honduras"], price: 70 },
 ];
 
 const countryCurrencyMap = new Map<string, { symbol: string; code: string }>([
@@ -30,7 +31,6 @@ const countryCurrencyMap = new Map<string, { symbol: string; code: string }>([
     ['Bolivia', { symbol: 'Bs', code: 'BOB' }],
     ['Nicaragua', { symbol: 'C$', code: 'NIO' }],
     ['Honduras', { symbol: 'L', code: 'HNL' }],
-    ['Haití', { symbol: '$', code: 'USD' }],
 ]);
 
 const countryLocaleMap = new Map<string, string>([
@@ -53,7 +53,6 @@ const countryLocaleMap = new Map<string, string>([
     ['Bolivia', 'es-BO'],
     ['Nicaragua', 'es-NI'],
     ['Honduras', 'es-HN'],
-    ['Haití', 'en-US'],
 ]);
 
 const exchangeRates = new Map<string, number>([
@@ -116,17 +115,47 @@ const CourseLandingPage: React.FC = () => {
   const { language, t } = useLanguage();
   const [selectedCountry, setSelectedCountry] = useState(language === 'pt' ? 'Brasil' : 'España');
   const [priceAnimationKey, setPriceAnimationKey] = useState(0);
+  const [isDetectingLocation, setIsDetectingLocation] = useState(true);
 
   const priceSectionRef = useRef<HTMLElement>(null);
   const [benefitsRef, benefitsVisible] = useScrollAnimation<HTMLElement>({ threshold: 0.2 });
   const [ctaRef, ctaVisible] = useScrollAnimation<HTMLElement>({ threshold: 0.2 });
 
   useEffect(() => {
-    setSelectedCountry(prev => {
-        if (language === 'pt' && (prev === 'España' || !allCountries.includes(prev))) return 'Brasil';
-        if (language === 'es' && (prev === 'Brasil' || !allCountries.includes(prev))) return 'España';
-        return prev;
-    });
+    const countryCodeMap: { [key: string]: string } = {
+        'ES': 'España', 'PA': 'Panamá', 'UY': 'Uruguay', 'CL': 'Chile',
+        'PT': 'Portugal', 'CR': 'Costa Rica', 'AR': 'Argentina', 'DO': 'República Dominicana',
+        'MX': 'México', 'BR': 'Brasil', 'CO': 'Colombia', 'PY': 'Paraguay',
+        'PE': 'Perú', 'EC': 'Ecuador', 'GT': 'Guatemala', 'SV': 'El Salvador',
+        'BO': 'Bolivia', 'NI': 'Nicaragua', 'HN': 'Honduras',
+    };
+
+    const detectCountry = async () => {
+      setIsDetectingLocation(true);
+      try {
+        const { data, error: invokeError } = await supabase.functions.invoke('ip-lookup');
+
+        if (invokeError) {
+          throw invokeError;
+        }
+
+        const detectedCountryCode = data.country; // ipinfo.io returns a country code like 'ES'
+        const mappedCountry = countryCodeMap[detectedCountryCode];
+        
+        if (mappedCountry && allCountries.includes(mappedCountry)) {
+          setSelectedCountry(mappedCountry);
+        } else {
+          // Fallback to default language-based country if not in our list
+          setSelectedCountry(language === 'pt' ? 'Brasil' : 'España');
+        }
+      } catch (error) {
+        console.error("Could not detect country via Supabase function, falling back to default:", error);
+        setSelectedCountry(language === 'pt' ? 'Brasil' : 'España');
+      } finally {
+        setIsDetectingLocation(false);
+      }
+    };
+    detectCountry();
   }, [language]);
 
   const currentPriceInfo = useMemo(() => {
@@ -150,6 +179,7 @@ const CourseLandingPage: React.FC = () => {
   };
 
   const formattedPrice = useMemo(() => {
+    if (isDetectingLocation) return '';
     const { price, code } = currentPriceInfo;
     const locale = countryLocaleMap.get(selectedCountry) || 'es-ES';
     const noDecimalsCurrencies = ['COP', 'CLP', 'PYG', 'ARS', 'CRC'];
@@ -166,7 +196,7 @@ const CourseLandingPage: React.FC = () => {
       const formattedNumber = new Intl.NumberFormat(locale.split('-')[0]).format(price);
       return code === 'EUR' ? `${formattedNumber} ${symbol}` : `${symbol}${formattedNumber}`;
     }
-  }, [currentPriceInfo, selectedCountry]);
+  }, [currentPriceInfo, selectedCountry, isDetectingLocation]);
 
   return (
     <div className="animate-fadeIn">
@@ -199,23 +229,33 @@ const CourseLandingPage: React.FC = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-pure-white font-poppins mb-4">{t('purchase.priceTitle')}</h2>
           <p className="text-lg text-gray-400 mt-2 max-w-2xl mx-auto mb-8">{t('purchase.priceSubtitle')}</p>
           
-          <div className="max-w-sm mx-auto mb-8">
-            <label htmlFor="country-selector" className="sr-only">{t('purchase.countrySelectLabel')}</label>
-            <select
-              id="country-selector"
-              value={selectedCountry}
-              onChange={handleCountryChange}
-              className="w-full p-4 bg-gray-800 border-2 border-tech-blue/50 rounded-lg text-pure-white text-lg focus:outline-none focus:ring-2 focus:ring-tech-cyan"
-            >
-              {allCountries.map(country => (
-                <option key={country} value={country}>{t(`countries.${country}`)}</option>
-              ))}
-            </select>
-          </div>
+          {isDetectingLocation ? (
+            <div className="h-48 flex flex-col justify-center items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-tech-cyan mb-4"></div>
+                <p className="text-gray-400">Detectando tu ubicación para mostrarte el precio correcto...</p>
+            </div>
+          ) : (
+            <>
+              <div className="max-w-sm mx-auto mb-8">
+                <label htmlFor="country-selector" className="sr-only">{t('purchase.countrySelectLabel')}</label>
+                <select
+                  id="country-selector"
+                  value={selectedCountry}
+                  onChange={handleCountryChange}
+                  className="w-full p-4 bg-gray-800 border-2 border-tech-blue/50 rounded-lg text-pure-white text-lg focus:outline-none focus:ring-2 focus:ring-tech-cyan"
+                >
+                  {allCountries.map(country => (
+                    <option key={country} value={country}>{t(`countries.${country}`)}</option>
+                  ))}
+                </select>
+              </div>
 
-          <div key={priceAnimationKey} className="text-7xl md:text-8xl font-bold font-poppins text-tech-cyan animate-price-pulse">
-            {formattedPrice}
-          </div>
+              <div key={priceAnimationKey} className="text-7xl md:text-8xl font-bold font-poppins text-tech-cyan animate-price-pulse">
+                {formattedPrice}
+              </div>
+            </>
+          )}
+
         </div>
       </section>
 
@@ -237,8 +277,8 @@ const CourseLandingPage: React.FC = () => {
       <section ref={ctaRef} className={`py-20 transition-all duration-1000 ease-out ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-pure-white font-poppins">{t('purchase.finalCtaTitle')}</h2>
-          <button onClick={handleStripeCheckout} className="mt-4 btn-pulse-glow bg-tech-cyan text-corporate-dark font-bold py-4 px-10 rounded-lg text-xl hover:bg-white transition-all duration-300 shadow-lg shadow-tech-cyan/20 hover:shadow-xl hover:shadow-tech-cyan/40 transform hover:-translate-y-1">
-            {t('purchase.finalCtaButton')} – {formattedPrice}
+          <button onClick={handleStripeCheckout} disabled={isDetectingLocation} className="mt-4 btn-pulse-glow bg-tech-cyan text-corporate-dark font-bold py-4 px-10 rounded-lg text-xl hover:bg-white transition-all duration-300 shadow-lg shadow-tech-cyan/20 hover:shadow-xl hover:shadow-tech-cyan/40 transform hover:-translate-y-1 disabled:bg-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:animate-none">
+            {isDetectingLocation ? t('auth.loading') : `${t('purchase.finalCtaButton')} – ${formattedPrice}`}
           </button>
         </div>
       </section>

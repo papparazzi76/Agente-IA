@@ -14,6 +14,7 @@ import ScrollToTop from './components/ScrollToTop';
 import BackToTopButton from './components/BackToTopButton';
 import Chatbot from './components/Chatbot';
 import ProtectedRoute from './components/ProtectedRoute';
+import MarketplacePage from './pages/MarketplacePage';
 
 
 const App: React.FC = () => {
@@ -30,6 +31,7 @@ const App: React.FC = () => {
               path="/modulo/:moduleId" 
               element={<ModulePage />} 
             />
+            <Route path="/marketplace" element={<MarketplacePage />} />
             <Route path="/venta-curso" element={<CourseLandingPage />} />
             <Route path="/compra" element={<Navigate to="/venta-curso" replace />} />
             <Route path="/auth" element={<AuthPage />} />

@@ -48,6 +48,7 @@ const Header: React.FC = () => {
           <div className="hidden md:flex items-center space-x-4">
             <NavLink to="/" className={navLinkClass}>{t('header.navHome')}</NavLink>
             <NavLink to="/temario" className={navLinkClass}>{t('header.navSyllabus')}</NavLink>
+            <NavLink to="/marketplace" className={navLinkClass}>{t('header.navMarketplace')}</NavLink>
             {currentUser ? (
               <>
                 <NavLink to="/dashboard" className={navLinkClass}>{t('header.navDashboard')}</NavLink>
@@ -90,6 +91,7 @@ const Header: React.FC = () => {
         >
           <NavLink to="/" className={navLinkClass} onClick={closeMenu}>{t('header.navHome')}</NavLink>
           <NavLink to="/temario" className={navLinkClass} onClick={closeMenu}>{t('header.navSyllabus')}</NavLink>
+          <NavLink to="/marketplace" className={navLinkClass} onClick={closeMenu}>{t('header.navMarketplace')}</NavLink>
           {currentUser ? (
             <>
               <NavLink to="/dashboard" className={navLinkClass} onClick={closeMenu}>{t('header.navDashboard')}</NavLink>

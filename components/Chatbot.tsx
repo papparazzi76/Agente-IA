@@ -31,7 +31,12 @@ const generateCourseContext = (lang: 'es' | 'pt'): string => {
         ? "El curso tiene un precio base de 197€ (ajustado por país) y da acceso perpetuo al contenido. Incluye 30 días de acceso gratuito al 'Playground IA'. Después, el Playground es una membresía opcional de 19 €/mes en España, con pago recurrente y cancelación con 24h de antelación."
         : "O curso tem um preço base de 197€ (ajustado por país) e dá acesso perpétuo ao conteúdo. Inclui 30 dias de acesso gratuito ao 'Playground IA'. Depois, o Playground é uma subscrição opcional de 19 €/mês em Espanha, com pagamento recorrente e cancelamento com 24h de antecedência.";
 
+    const updatesAndRefundInfo = lang === 'es'
+        ? "Todas las actualizaciones futuras del curso son gratuitas para quienes compraron el curso. Hay una política de reembolso de 14 días. Si un usuario solicita el reembolso dentro de este período, se le devuelve el importe completo y se cancela su acceso a todo el contenido, presente y futuro."
+        : "Todas as atualizações futuras do curso são gratuitas para quem comprou o curso. Existe uma política de reembolso de 14 dias. Se um utilizador solicitar o reembolso dentro deste período, o valor total é devolvido e o seu acesso a todo o conteúdo, presente e futuro, é cancelado.";
+
     contextParts.push(playgroundInfo);
+    contextParts.push(updatesAndRefundInfo);
     contextParts.push("El curso se ofrece en español y portugués.");
     contextParts.push("Puedes ayudar a los usuarios a navegar el sitio. Las secciones son: Inicio (/), Temario (/temario), Área de Miembros (/dashboard), Playground IA (/playground) y Compra (/compra).");
 
@@ -45,6 +50,7 @@ const Chatbot: React.FC = () => {
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const chatRef = useRef<Chat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { language, t } = useLanguage();
@@ -58,9 +64,9 @@ const Chatbot: React.FC = () => {
       try {
         const ai = new GoogleGenAI({ apiKey });
         const courseContext = generateCourseContext(language);
-        const systemInstruction = `Eres 'AgenteIA Asistente', un chatbot amigable y servicial para el sitio web 'IA para Agentes Inmobiliarios'. Tu objetivo es ayudar a los usuarios respondiendo sus preguntas sobre el curso y guiándolos por la plataforma.
+        const systemInstruction = `Eres 'AgenteIA Asistente', un chatbot amigable y experto para el sitio web 'IA para Agentes Inmobiliarios'. Tu objetivo es actuar como un asistente de Preguntas Frecuentes (FAQs), ayudando a los usuarios con sus dudas sobre el curso y guiándolos por la plataforma.
         - Sé conciso y directo.
-        - Utiliza la siguiente información para responder preguntas sobre el contenido y la estructura del curso:
+        - Utiliza la siguiente información para responder preguntas sobre el contenido, precio, acceso y estructura del curso:
         ${courseContext}
         - Si no sabes una respuesta, di que no tienes esa información pero que puedes ayudar con otros temas del curso.
         - Responde siempre en el idioma de la conversación (español o portugués).
@@ -81,6 +87,7 @@ const Chatbot: React.FC = () => {
         });
         
         setMessages([{ role: 'model', text: history[1].parts[0].text as string }]);
+        setShowSuggestions(true);
 
       } catch (e) {
         console.error("Error initializing chat:", e);
@@ -99,20 +106,22 @@ const Chatbot: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  const handleSendMessage = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!userInput.trim() || isLoading) return;
+  const sendMessage = async (messageText: string) => {
+    if (!messageText.trim() || isLoading) return;
 
-    const userMessage: Message = { role: 'user', text: userInput.trim() };
+    const userMessage: Message = { role: 'user', text: messageText.trim() };
     setMessages(prev => [...prev, userMessage]);
-    setUserInput('');
+    setShowSuggestions(false);
     setIsLoading(true);
     setError('');
 
     try {
-        if (!chatRef.current) throw new Error("Chat not initialized");
-
-        const responseStream = await chatRef.current.sendMessageStream({ message: userInput.trim() });
+        if (!chatRef.current) {
+            await initializeChat();
+            if(!chatRef.current) throw new Error("Chat could not be initialized");
+        }
+        
+        const responseStream = await chatRef.current.sendMessageStream({ message: messageText.trim() });
         
         let fullResponse = '';
         setMessages(prev => [...prev, { role: 'model', text: '' }]);
@@ -128,12 +137,30 @@ const Chatbot: React.FC = () => {
 
     } catch (err) {
         console.error(err);
-        setError(t('playground.common.error'));
-        setMessages(prev => [...prev, { role: 'model', text: t('playground.common.error') }]);
+        const errorMessage = t('playground.common.error');
+        setError(errorMessage);
+        setMessages(prev => [...prev, { role: 'model', text: errorMessage }]);
     } finally {
         setIsLoading(false);
     }
   };
+
+  const handleFormSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    sendMessage(userInput);
+    setUserInput('');
+  };
+
+  const handleSuggestionClick = (question: string) => {
+    sendMessage(question);
+  };
+  
+  const suggestedQuestions = [
+    t('chatbot.suggestion1'),
+    t('chatbot.suggestion2'),
+    t('chatbot.suggestion3'),
+    t('chatbot.suggestion4'),
+  ];
 
   const renderMarkdown = (text: string) => {
       const html = text
@@ -182,9 +209,27 @@ const Chatbot: React.FC = () => {
             )}
           <div ref={messagesEndRef} />
         </div>
+        
+        {showSuggestions && (
+          <div className="p-4 border-t border-tech-blue/20">
+            <p className="text-sm font-bold text-gray-400 mb-2">{t('chatbot.suggestionsTitle')}</p>
+            <div className="flex flex-wrap gap-2">
+              {suggestedQuestions.map((q, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleSuggestionClick(q)}
+                  className="bg-gray-700 text-gray-200 text-sm px-3 py-1 rounded-full hover:bg-gray-600 transition-colors"
+                  disabled={isLoading}
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="p-4 border-t border-tech-blue/30">
-          <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+          <form onSubmit={handleFormSubmit} className="flex items-center gap-2">
             <input
               type="text"
               value={userInput}
