@@ -21,6 +21,7 @@ import AutomationProductivityPage from './pages/AutomationProductivityPage';
 import LegalDocumentationPage from './pages/LegalDocumentationPage';
 import PremiumExtrasPage from './pages/PremiumExtrasPage';
 import DashboardPage from './pages/DashboardPage';
+// FIX: Import CRM and Forum page components.
 import CRMPage from './pages/CRMPage';
 import PropertiesListPage from './pages/crm/PropertiesListPage';
 import PropertyDetailPage from './pages/crm/PropertyDetailPage';
@@ -32,7 +33,6 @@ import ForumHomePage from './pages/forum/ForumHomePage';
 import ThreadListPage from './pages/forum/ThreadListPage';
 import ThreadDetailPage from './pages/forum/ThreadDetailPage';
 import NewThreadPage from './pages/forum/NewThreadPage';
-import QuoteRequestModal from './components/QuoteRequestModal';
 
 const App: React.FC = () => {
   return (
@@ -69,6 +69,7 @@ const App: React.FC = () => {
               element={<ProtectedRoute><PlaygroundPage /></ProtectedRoute>}
             />
 
+            {/* FIX: Added routes for CRM section */}
             <Route path="/crm" element={<ProtectedRoute><CRMPage /></ProtectedRoute>}>
               <Route index element={<Navigate to="properties" replace />} />
               <Route path="properties" element={<PropertiesListPage />} />
@@ -80,6 +81,7 @@ const App: React.FC = () => {
               <Route path="contacts/:id/edit" element={<ContactFormPage />} />
             </Route>
 
+            {/* FIX: Added routes for Forum section */}
             <Route path="/foro" element={<ProtectedRoute><ForumPage /></ProtectedRoute>}>
               <Route index element={<ForumHomePage />} />
               <Route path=":sectionSlug" element={<ThreadListPage />} />
@@ -98,7 +100,6 @@ const App: React.FC = () => {
         <Footer />
         <BackToTopButton />
         <Chatbot />
-        <QuoteRequestModal />
       </div>
     </HashRouter>
   );

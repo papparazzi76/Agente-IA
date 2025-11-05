@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useQuote } from '../contexts/QuoteContext';
-import { useLanguage } from '../contexts/LanguageContext';
 
 const CheckIcon = () => (
     <svg className="w-6 h-6 text-tech-cyan mr-4 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -15,19 +13,6 @@ const FaqItem: React.FC<{ question: string, answer: string }> = ({ question, ans
 );
 
 const WebDesignPage: React.FC = () => {
-    const { openModal } = useQuote();
-    const { t } = useLanguage();
-
-    const productKeys = [
-        'marketplace.cat1Item1',
-        'marketplace.cat1Item2',
-        'marketplace.cat1Item3',
-        'marketplace.cat1Item4',
-    ];
-
-    const handleQuoteRequest = () => {
-        openModal(productKeys);
-    };
 
     const faqs1 = [
         { q: "¿Cómo garantizan la entrega en 72 horas?", a: "El plazo de 72 horas laborables comienza una vez que hemos recibido toda la información y materiales necesarios de tu parte (textos iniciales, logo si ya lo tienes, y confirmación del diseño seleccionado). Nuestro proceso es altamente optimizado para asegurar la máxima velocidad." },
@@ -109,8 +94,8 @@ const WebDesignPage: React.FC = () => {
                             <h3 className="text-2xl font-poppins font-semibold text-gray-300 mb-2">💰 Inversión y Lanzamiento</h3>
                             <p className="text-5xl font-bold text-tech-cyan mb-4">Desde 97 €/año</p>
                             <p className="text-gray-400 mb-6">➡️ ¡No Esperes Más para Estar Online! Si buscas velocidad, profesionalidad y un enfoque 100% inmobiliario con un plazo de entrega garantizado, esta es tu solución. En 72 horas puedes tener la herramienta digital que impulsará tus ventas.</p>
-                            <button onClick={handleQuoteRequest} className="btn-pulse-glow bg-tech-cyan text-corporate-dark font-bold py-3 px-8 rounded-lg text-lg hover:bg-white transition-all duration-300 shadow-lg shadow-tech-cyan/20 transform hover:-translate-y-1">
-                                {t('marketplace.viewProducts')}
+                            <button className="btn-pulse-glow bg-tech-cyan text-corporate-dark font-bold py-3 px-8 rounded-lg text-lg hover:bg-white transition-all duration-300 shadow-lg shadow-tech-cyan/20 transform hover:-translate-y-1">
+                                Ver Planes y Comenzar
                             </button>
                         </div>
                     </div>

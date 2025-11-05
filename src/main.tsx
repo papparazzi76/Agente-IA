@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
-import './index.css'; // Import global styles and Tailwind CSS
-import { AuthProvider } from './contexts/AuthContext.tsx';
-import { LanguageProvider } from './contexts/LanguageContext.tsx';
-import { ProgressProvider } from './contexts/ProgressContext.tsx';
-import { CRMProvider } from './contexts/CRMContext.tsx';
-import { ForumProvider } from './contexts/ForumContext.tsx';
-import { QuoteProvider } from './contexts/QuoteContext.tsx';
+import App from './App';
+import { AuthProvider } from './contexts/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { ProgressProvider } from './contexts/ProgressContext';
+import { CRMProvider } from './contexts/CRMContext';
+import { ForumProvider } from './contexts/ForumContext';
+import './index.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -22,9 +21,7 @@ root.render(
         <ProgressProvider>
           <CRMProvider>
             <ForumProvider>
-              <QuoteProvider>
-                <App />
-              </QuoteProvider>
+              <App />
             </ForumProvider>
           </CRMProvider>
         </ProgressProvider>
