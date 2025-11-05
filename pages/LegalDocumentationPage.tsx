@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useQuote } from '../contexts/QuoteContext';
 
 const CheckIcon = () => (
     <svg className="w-6 h-6 text-tech-cyan mr-4 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -15,6 +16,17 @@ const FaqItem: React.FC<{ question: string, answer: string }> = ({ question, ans
 
 const LegalDocumentationPage: React.FC = () => {
     const { t } = useLanguage();
+    const { openModal } = useQuote();
+
+    const productKeys = [
+        'marketplace.cat5Item1',
+        'marketplace.cat5Item2',
+        'marketplace.cat5Item3',
+    ];
+
+    const handleQuoteRequest = () => {
+        openModal(productKeys);
+    };
 
     const faqs1 = [
         { q: t('legalDocumentation.faq1q1'), a: t('legalDocumentation.faq1a1') },
@@ -77,7 +89,7 @@ const LegalDocumentationPage: React.FC = () => {
                             <h3 className="text-2xl font-poppins font-semibold text-gray-300 mb-2">{t('legalDocumentation.ctaTitle')}</h3>
                             <p className="text-5xl font-bold text-tech-cyan mb-4">{t('legalDocumentation.ctaPrice')}</p>
                             <p className="text-gray-400 mb-6 max-w-2xl mx-auto">{t('legalDocumentation.ctaSubtitle')}</p>
-                            <button className="btn-pulse-glow bg-tech-cyan text-corporate-dark font-bold py-3 px-8 rounded-lg text-lg hover:bg-white transition-all duration-300 shadow-lg shadow-tech-cyan/20 transform hover:-translate-y-1">
+                            <button onClick={handleQuoteRequest} className="btn-pulse-glow bg-tech-cyan text-corporate-dark font-bold py-3 px-8 rounded-lg text-lg hover:bg-white transition-all duration-300 shadow-lg shadow-tech-cyan/20 transform hover:-translate-y-1">
                                 {t('legalDocumentation.ctaButton')}
                             </button>
                         </div>
