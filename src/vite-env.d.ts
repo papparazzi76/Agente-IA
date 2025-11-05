@@ -3,8 +3,4 @@
 // It has been replaced with a declaration for `process.env` to match the usage in the application code.
 // This provides TypeScript with the necessary type information for `process.env.API_KEY` and resolves the build error.
 
-declare var process: {
-  env: {
-    API_KEY: string;
-  }
-};
+// FIX: Removed redeclaration of 'process' to avoid conflict with existing global types.

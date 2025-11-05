@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
-import { AuthProvider } from './contexts/AuthContext.tsx';
-import { LanguageProvider } from './contexts/LanguageContext.tsx';
-import { ProgressProvider } from './contexts/ProgressContext.tsx';
-import { CRMProvider } from './contexts/CRMContext.tsx';
-import { ForumProvider } from './contexts/ForumContext.tsx';
-import { QuoteProvider } from './contexts/QuoteContext.tsx';
+// FIX: Corrected import paths to be relative to the `src` directory.
+import { AuthProvider } from '../contexts/AuthContext.tsx';
+import { LanguageProvider } from '../contexts/LanguageContext.tsx';
+import { ProgressProvider } from '../contexts/ProgressContext.tsx';
+import { CRMProvider } from '../contexts/CRMContext.tsx';
+import { ForumProvider } from '../contexts/ForumContext.tsx';
+import { QuoteProvider } from '../contexts/QuoteContext.tsx';
 
 
 const rootElement = document.getElementById('root');
