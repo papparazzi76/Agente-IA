@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import AdCopyGenerator from '../components/ai-tools/AdCopyGenerator';
 import ImageGenerator from '../components/ai-tools/ImageGenerator';
@@ -9,53 +9,104 @@ import NegotiationSimulator from '../components/ai-tools/NegotiationSimulator';
 import LeadScoringAssistant from '../components/ai-tools/LeadScoringAssistant';
 import MortgageCalculator from '../components/ai-tools/MortgageCalculator';
 
-type Tool = 'adCopy' | 'image' | 'email' | 'marketInsights' | 'bio' | 'negotiation' | 'leadScoring' | 'mortgageCalculator';
+type ToolId = 'adCopy' | 'image' | 'email' | 'marketInsights' | 'bio' | 'negotiation' | 'leadScoring' | 'mortgageCalculator';
 
-const ExternalLinkIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-    </svg>
-);
+const MortgageIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.75A.75.75 0 013 4.5h.75m0 0h.75A.75.75 0 015.25 6v.75m0 0v-.75A.75.75 0 015.25 4.5h-.75m0 0h.75A.75.75 0 017.5 6v.75m0 0v-.75A.75.75 0 017.5 4.5h-.75m-4.5 0h.75a.75.75 0 01.75.75v.75m0 0v-.75a.75.75 0 01-.75-.75h-.75m-1.5 13.5v-1.5c0-.414.336-.75.75-.75h3.75a.75.75 0 01.75.75v1.5m-5.25 0h5.25m-5.25 0h-1.5m5.25 0h1.5m-5.25 0h-1.5a.75.75 0 00-.75.75v1.5m5.25 0h1.5a.75.75 0 00.75-.75v-1.5m10.5-11.25h.75a.75.75 0 01.75.75v.75m0 0v-.75a.75.75 0 01-.75-.75h-.75m0 0h.75A.75.75 0 0121 6v.75m0 0v-.75a.75.75 0 01-.75-.75h-.75m-1.5 0h.75a.75.75 0 01.75.75v.75m0 0v-.75a.75.75 0 01-.75-.75h-.75m0 0h-.75a.75.75 0 00-.75.75v.75m0 0v-.75a.75.75 0 00.75-.75h.75M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
+const LeadScoringIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125z" /></svg>;
+const NegotiationIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a.375.375 0 01.265-.112c2.836-.051 5.483-.97 7.23-2.617.632-.587.996-1.396.996-2.231s-.364-1.644-.996-2.231C16.94 5.978 14.293 5.05 11.457 5c-1.502-.016-2.972.19-4.395.584A3.743 3.743 0 003.75 9.01z" /></svg>;
+const AdCopyIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>;
+const BioIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>;
+const ImageIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.158 0a.225.225 0 11-.45 0 .225.225 0 01.45 0z" /></svg>;
+const EmailIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>;
+const MarketIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>;
+const LegalIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.036.243c-2.132 0-4.14-.834-5.657-2.343-1.517-1.509-2.343-3.525-2.343-5.657s.826-4.148 2.343-5.657C11.26 6.175 13.268 5.34 15.4 5.34c.621 0 1.22.08 1.79.231m-1.562 2.653l1.562-2.653m0 0l2.652 1.562M17.25 4.97l2.652-1.562" /></svg>;
+const ExpenseIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 3h.008v.008H8.25v-.008zm0 3h.008v.008H8.25v-.008zm3-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zM6 6h12v2.25a2.25 2.25 0 01-2.25 2.25H8.25A2.25 2.25 0 016 8.25V6zM4.5 6a2.25 2.25 0 012.25-2.25h10.5A2.25 2.25 0 0119.5 6v12a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18V6z" /></svg>;
+const ExternalLinkIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>;
 
 const PlaygroundPage: React.FC = () => {
   const { t } = useLanguage();
-  const [activeTool, setActiveTool] = useState<Tool>('mortgageCalculator');
+  const [activeTool, setActiveTool] = useState<ToolId | null>(null);
+  const toolContainerRef = useRef<HTMLDivElement>(null);
+
+  const tools = [
+    { id: 'mortgageCalculator', icon: <MortgageIcon />, titleKey: 'playground.mortgageCalculator.title', descriptionKey: 'playground.mortgageCalculator.description' },
+    { id: 'leadScoring', icon: <LeadScoringIcon />, titleKey: 'playground.leadScoringAssistant.title', descriptionKey: 'playground.leadScoringAssistant.description' },
+    { id: 'negotiation', icon: <NegotiationIcon />, titleKey: 'playground.negotiationSimulator.title', descriptionKey: 'playground.negotiationSimulator.description' },
+    { id: 'adCopy', icon: <AdCopyIcon />, titleKey: 'playground.adCopyGenerator.title', descriptionKey: 'playground.adCopyGenerator.description' },
+    { id: 'bio', icon: <BioIcon />, titleKey: 'playground.bioOptimizer.title', descriptionKey: 'playground.bioOptimizer.description' },
+    { id: 'image', icon: <ImageIcon />, titleKey: 'playground.imageGenerator.title', descriptionKey: 'playground.imageGenerator.description' },
+    { id: 'email', icon: <EmailIcon />, titleKey: 'playground.emailComposer.title', descriptionKey: 'playground.emailComposer.description' },
+    { id: 'marketInsights', icon: <MarketIcon />, titleKey: 'playground.marketInsightsGenerator.title', descriptionKey: 'playground.marketInsightsGenerator.description' },
+    { id: 'legalAssistant', icon: <LegalIcon />, titleKey: 'playground.legalAssistantTitle', descriptionKey: 'playground.legalAssistantDescription', href: 'https://dimgrey-mink-513983.hostingersite.com/' },
+    { id: 'expenseCalculator', icon: <ExpenseIcon />, titleKey: 'playground.expenseCalculatorTitle', descriptionKey: 'playground.expenseCalculatorDescription', href: 'https://mistyrose-crow-572702.hostingersite.com/' },
+  ];
+  
+  useEffect(() => {
+    if (activeTool && toolContainerRef.current) {
+      const selectedTool = tools.find(tool => tool.id === activeTool);
+      if (selectedTool && !selectedTool.href) {
+        setTimeout(() => {
+            toolContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  }, [activeTool, tools]);
 
   const renderTool = () => {
     switch (activeTool) {
-      case 'mortgageCalculator':
-        return <MortgageCalculator />;
-      case 'leadScoring':
-        return <LeadScoringAssistant />;
-      case 'negotiation':
-        return <NegotiationSimulator />;
-      case 'adCopy':
-        return <AdCopyGenerator />;
-      case 'bio':
-        return <BioOptimizer />;
-      case 'image':
-        return <ImageGenerator />;
-      case 'email':
-        return <EmailComposer />;
-      case 'marketInsights':
-        return <MarketInsightsGenerator />;
-      default:
-        return <MortgageCalculator />;
+      case 'mortgageCalculator': return <MortgageCalculator />;
+      case 'leadScoring': return <LeadScoringAssistant />;
+      case 'negotiation': return <NegotiationSimulator />;
+      case 'adCopy': return <AdCopyGenerator />;
+      case 'bio': return <BioOptimizer />;
+      case 'image': return <ImageGenerator />;
+      case 'email': return <EmailComposer />;
+      case 'marketInsights': return <MarketInsightsGenerator />;
+      default: return null;
     }
   };
 
-  const TabButton: React.FC<{ tool: Tool; label: string }> = ({ tool, label }) => (
-    <button
-      onClick={() => setActiveTool(tool)}
-      className={`px-4 py-3 font-semibold text-sm whitespace-nowrap border-b-2 transition-all duration-300 ${
-        activeTool === tool
-          ? 'border-tech-cyan text-tech-cyan'
-          : 'border-transparent text-gray-400 hover:border-gray-500 hover:text-gray-200'
-      }`}
-    >
-      {label}
-    </button>
-  );
+  // FIX: Explicitly typed the props for the locally-defined `ToolCard` component.
+  // This resolves a TypeScript error where the special `key` prop from a `.map()` was being
+  // incorrectly treated as a regular prop because TypeScript could not properly infer
+  // that `ToolCard` was a React component without explicit types.
+  const ToolCard: React.FC<{
+    tool: (typeof tools)[number];
+    isActive: boolean;
+    onClick: () => void;
+  }> = ({ tool, isActive, onClick }) => {
+    const cardContent = (
+      <>
+        <div className="w-16 h-16 mb-5 rounded-lg bg-gray-900/50 border border-tech-blue/30 flex items-center justify-center shadow-inner shadow-black/20 group-hover:bg-gray-700/50 transition-colors duration-300">
+          {tool.icon}
+        </div>
+        <h3 className="font-poppins text-lg font-bold text-pure-white mb-2">{t(tool.titleKey)}</h3>
+        <p className="font-inter text-sm text-gray-400 flex-grow">{t(tool.descriptionKey)}</p>
+      </>
+    );
+    
+    const baseClasses = "text-left p-6 rounded-xl h-full flex flex-col items-start transition-all duration-300 card-glow-border group";
+    const activeClasses = "border-2 border-tech-cyan bg-tech-blue/10";
+    const inactiveClasses = "border-2 border-gray-700 bg-gray-800/50";
+    
+    if (tool.href) {
+      return (
+        <a href={tool.href} target="_blank" rel="noopener noreferrer" className={`${baseClasses} ${inactiveClasses}`}>
+          {cardContent}
+           <div className="flex items-center text-tech-cyan text-sm font-semibold mt-4">
+              Abrir herramienta <ExternalLinkIcon />
+           </div>
+        </a>
+      );
+    }
+
+    return (
+      <button onClick={onClick} className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}>
+        {cardContent}
+      </button>
+    );
+  };
+
 
   return (
     <div className="animate-fadeIn">
@@ -71,39 +122,26 @@ const PlaygroundPage: React.FC = () => {
       </section>
 
       <section className="py-10 md:py-16 bg-corporate-dark">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <div className="mb-8 border-b border-tech-blue/30">
-            <div className="flex items-center -mb-px overflow-x-auto">
-              <TabButton tool="mortgageCalculator" label={t('playground.mortgageCalculator.title')} />
-              <TabButton tool="leadScoring" label={t('playground.leadScoringAssistant.title')} />
-              <TabButton tool="negotiation" label={t('playground.negotiationSimulator.title')} />
-              <TabButton tool="adCopy" label={t('playground.adCopyGenerator.title')} />
-              <TabButton tool="bio" label={t('playground.bioOptimizer.title')} />
-              <TabButton tool="image" label={t('playground.imageGenerator.title')} />
-              <TabButton tool="email" label={t('playground.emailComposer.title')} />
-              <TabButton tool="marketInsights" label={t('playground.marketInsightsGenerator.title')} />
-              <a
-                href="https://dimgrey-mink-513983.hostingersite.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center px-4 py-3 font-semibold text-sm whitespace-nowrap border-b-2 border-transparent text-gray-400 hover:border-gray-500 hover:text-gray-200 transition-all duration-300"
-              >
-                {t('playground.legalAssistantTitle')} <ExternalLinkIcon />
-              </a>
-              <a
-                href="https://mistyrose-crow-572702.hostingersite.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center px-4 py-3 font-semibold text-sm whitespace-nowrap border-b-2 border-transparent text-gray-400 hover:border-gray-500 hover:text-gray-200 transition-all duration-300"
-              >
-                {t('playground.expenseCalculatorTitle')} <ExternalLinkIcon />
-              </a>
-            </div>
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl font-poppins text-gray-300">Selecciona una herramienta para empezar</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {tools.map(tool => (
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                isActive={activeTool === tool.id}
+                onClick={() => setActiveTool(tool.id as ToolId)}
+              />
+            ))}
           </div>
 
-          <div className="bg-gray-900/50 p-6 md:p-8 rounded-lg border border-tech-blue/20 min-h-[400px]">
-            {renderTool()}
-          </div>
+          {activeTool && (
+            <div ref={toolContainerRef} className="bg-gray-900/50 p-6 md:p-8 rounded-lg border border-tech-blue/20 min-h-[400px] animate-fadeIn">
+              {renderTool()}
+            </div>
+          )}
         </div>
       </section>
     </div>

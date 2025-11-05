@@ -9,9 +9,17 @@ const CheckIcon: React.FC = () => (
     <svg className="w-6 h-6 text-tech-cyan mr-4 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
 );
 
+const StarIcon: React.FC = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-tech-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.5 21.75l-.398-1.188a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.188-.398a2.25 2.25 0 001.423-1.423L16.5 15.75l.398 1.188a2.25 2.25 0 001.423 1.423L19.5 18.75l-1.188.398a2.25 2.25 0 00-1.423 1.423z" />
+    </svg>
+);
+
+
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const [aiCourseRef, aiCourseVisible] = useScrollAnimation<HTMLElement>({ threshold: 0.2 });
   const [featuresRef, featuresVisible] = useScrollAnimation<HTMLElement>({ threshold: 0.2 });
   const [modulesRef, modulesVisible] = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
   const [ctaRef, ctaVisible] = useScrollAnimation<HTMLElement>({ threshold: 0.2 });
@@ -56,6 +64,63 @@ const HomePage: React.FC = () => {
                     </Link>
                 </div>
             </div>
+        </div>
+      </section>
+
+      {/* AI Course Creation Section */}
+      <section ref={aiCourseRef} className={`py-20 transition-all duration-1000 ease-out ${aiCourseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="container mx-auto px-6">
+          <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-tech-blue/20 p-8 md:p-12 card-glow-border max-w-5xl mx-auto">
+            <div className="text-center mb-10">
+              <div className="flex justify-center items-center gap-4 mb-4">
+                <StarIcon />
+                <h2 className="text-3xl md:text-4xl font-bold text-pure-white font-poppins">{t('home.aiCourse.title')}</h2>
+              </div>
+              <p className="text-lg text-gray-300">{t('home.aiCourse.intro')}</p>
+            </div>
+            
+            <div className="text-center mb-10">
+              <h3 className="text-2xl md:text-3xl font-bold font-poppins text-tech-cyan mb-4">{t('home.aiCourse.subtitle')}</h3>
+              <p className="text-gray-400 max-w-3xl mx-auto">{t('home.aiCourse.whyRadicalTitle')}</p>
+            </div>
+
+            <div className="space-y-8">
+              <div>
+                <h4 className="text-xl font-semibold mb-4 text-pure-white">{t('home.aiCourse.demoTitle')}</h4>
+                <ul className="space-y-4">
+                  <li className="flex items-start"><CheckIcon /><div><p className="text-gray-300" dangerouslySetInnerHTML={{ __html: t('home.aiCourse.demoPoint1') }}></p></div></li>
+                  <li className="flex items-start"><CheckIcon /><div><p className="text-gray-300" dangerouslySetInnerHTML={{ __html: t('home.aiCourse.demoPoint2') }}></p></div></li>
+                  <li className="flex items-start"><CheckIcon /><div><p className="text-gray-300" dangerouslySetInnerHTML={{ __html: t('home.aiCourse.demoPoint3') }}></p></div></li>
+                </ul>
+              </div>
+              
+               <div>
+                <h4 className="text-xl font-semibold mb-2 text-pure-white">{t('home.aiCourse.updatedTitle')}</h4>
+                <p className="text-gray-400">{t('home.aiCourse.updatedText')}</p>
+              </div>
+
+               <div>
+                <h4 className="text-xl font-semibold mb-2 text-pure-white">{t('home.aiCourse.structureTitle')}</h4>
+                <p className="text-gray-400">{t('home.aiCourse.structureText')}</p>
+              </div>
+
+              <div className="pt-6 border-t border-tech-blue/20">
+                <h3 className="text-2xl font-bold font-poppins text-tech-cyan mb-4">{t('home.aiCourse.commitmentTitle')}</h3>
+                <p className="text-gray-300 mb-4">{t('home.aiCourse.commitmentText')}</p>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold font-poppins text-tech-cyan mb-4">{t('home.aiCourse.learnTitle')}</h3>
+                 <ul className="space-y-2">
+                    <li className="flex items-start text-gray-300"><CheckIcon />{t('home.aiCourse.learnPoint1')}</li>
+                    <li className="flex items-start text-gray-300"><CheckIcon />{t('home.aiCourse.learnPoint2')}</li>
+                    <li className="flex items-start text-gray-300"><CheckIcon />{t('home.aiCourse.learnPoint3')}</li>
+                    <li className="flex items-start text-gray-300"><CheckIcon />{t('home.aiCourse.learnPoint4')}</li>
+                 </ul>
+              </div>
+              <p className="text-center font-semibold text-lg text-pure-white mt-8">{t('home.aiCourse.outro')}</p>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth, UserProfile } from '../contexts/AuthContext';
+import { supabase } from '../supabase';
 
 const ADMIN_EMAIL = 'admin@agenteia.com';
-const LOCAL_STORAGE_KEY = 'agenteIA-users';
 
 const AdminPage: React.FC = () => {
   const { t } = useLanguage();
@@ -17,50 +17,46 @@ const AdminPage: React.FC = () => {
       setTimeout(() => setMessage(null), 4000);
   };
 
-  const saveUsers = (updatedUsers: UserProfile[]) => {
-    setUsers(updatedUsers);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedUsers));
-  };
-
   const loadUsers = useCallback(async () => {
     setIsLoading(true);
     try {
-      const storedUsers = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (storedUsers) {
-        setUsers(JSON.parse(storedUsers));
-      } else {
-        const initialAdmin: UserProfile = {
-          id: 'mock-admin-id',
-          email: 'admin@agenteia.com',
-          role: 'admin',
-          has_lifetime_access: true,
-        };
-        saveUsers([initialAdmin]);
-      }
+      const { data, error } = await supabase.functions.invoke('get-all-users');
+      if (error) throw error;
+      setUsers(data || []); 
     } catch (e: any) {
-      console.error("Failed to load users from localStorage", e);
-      setMessage({ type: 'error', text: e.message || t('admin.loadError') });
+      console.error("Failed to load users from function", e);
+      displayMessage('error', e.message || t('admin.loadError'));
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   }, [t]);
+
 
   useEffect(() => {
     loadUsers();
   }, [loadUsers]);
 
-  const updateUser = async (userId: string, updates: Partial<UserProfile>) => {
-    const updatedUsers = users.map(u => u.id === userId ? { ...u, ...updates } : u);
-    saveUsers(updatedUsers);
-    displayMessage('success', t('admin.updateSuccess'));
+  const updateUserProfile = async (userId: string, updates: Partial<UserProfile>) => {
+    try {
+      const { error } = await supabase.functions.invoke('update-user-profile', {
+        body: { userId, updates },
+      });
+      if (error) throw error;
+      
+      setUsers(users.map(u => u.id === userId ? { ...u, ...updates } : u));
+      displayMessage('success', t('admin.updateSuccess'));
+    } catch (e: any) {
+        console.error("Failed to update user", e);
+        displayMessage('error', e.message || t('admin.updateError'));
+    }
   };
   
   const handleToggleBlock = (userId: string, isCurrentlyBlocked?: boolean) => {
-      updateUser(userId, { is_blocked: !isCurrentlyBlocked });
+      updateUserProfile(userId, { is_blocked: !isCurrentlyBlocked });
   };
   
   const handleGrantLifetime = (userId: string) => {
-      updateUser(userId, { has_lifetime_access: true });
+      updateUserProfile(userId, { has_lifetime_access: true });
   };
 
   const handleDeleteUser = async (userToDelete: UserProfile) => {
@@ -73,9 +69,18 @@ const AdminPage: React.FC = () => {
        return;
     }
     if (window.confirm(t('admin.deleteConfirm', { email: userToDelete.email }))) {
-        const updatedUsers = users.filter(u => u.id !== userToDelete.id);
-        saveUsers(updatedUsers);
-        displayMessage('success', t('admin.deleteSuccess'));
+        try {
+            const { error } = await supabase.functions.invoke('delete-user-by-id', {
+                body: { userId: userToDelete.id },
+            });
+            if (error) throw error;
+
+            setUsers(users.filter(u => u.id !== userToDelete.id));
+            displayMessage('success', t('admin.deleteSuccess'));
+        } catch(e: any) {
+            console.error("Failed to delete user", e);
+            displayMessage('error', e.message || t('admin.deleteError'));
+        }
     }
   };
   
@@ -90,7 +95,6 @@ const AdminPage: React.FC = () => {
       <section className="relative py-20 md:py-24 text-pure-white bg-corporate-dark">
         <div className="container mx-auto px-6 relative z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4 leading-tight text-glow">{t('header.navAdmin')}</h1>
-          <p className="text-lg md:text-xl text-gray-400 font-inter max-w-3xl mx-auto">{t('admin.welcome')}</p>
         </div>
       </section>
       <section className="py-10 md:py-16 bg-corporate-dark">

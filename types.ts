@@ -38,12 +38,15 @@ export interface Module {
   flashcards?: Flashcard[];
 }
 
+// FIX: Added missing CRM type definitions.
+// CRM Types
 export type PropertyType = 'Piso' | 'Chalet' | 'Adosado' | 'Local' | 'Oficina' | 'Terreno';
 export type PropertyStatus = 'Captación' | 'En Venta' | 'En Alquiler' | 'Reservado' | 'Vendido' | 'Alquilado';
 
 export interface Property {
   id: string;
   user_id: string;
+  created_at: string;
   address: string;
   price: number;
   type: PropertyType;
@@ -53,8 +56,7 @@ export interface Property {
   bathrooms: number;
   description: string;
   features: string;
-  photos: string[]; // URLs from Supabase Storage
-  created_at: string;
+  photos: string[];
 }
 
 export type ContactStatus = 'Lead' | 'Cliente Comprador' | 'Cliente Vendedor' | 'Pasado Cliente' | 'Colaborador';
@@ -62,10 +64,38 @@ export type ContactStatus = 'Lead' | 'Cliente Comprador' | 'Cliente Vendedor' | 
 export interface Contact {
   id: string;
   user_id: string;
-  name: string;
-  email?: string;
-  phone?: string;
-  status: ContactStatus;
-  notes?: string;
   created_at: string;
+  name: string;
+  email?: string | null;
+  phone?: string | null;
+  status: ContactStatus;
+  notes?: string | null;
+}
+
+// FIX: Added missing Forum type definitions.
+// Forum Types
+export interface ForumSection {
+  id: string;
+  slug: string;
+  title: LocalizedString;
+  description: LocalizedString;
+}
+
+export interface ForumThread {
+  id: string;
+  section_id: string;
+  user_id: string;
+  title: string;
+  created_at: string;
+  author_username?: string | null;
+  reply_count?: number | null;
+}
+
+export interface ForumPost {
+  id: string;
+  thread_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  author_username?: string | null;
 }

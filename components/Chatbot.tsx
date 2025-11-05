@@ -95,6 +95,31 @@ const Chatbot: React.FC = () => {
       }
   }, [language]);
 
+  const analyzeSentiment = useCallback(async (text: string): Promise<'positive' | 'neutral' | 'negative'> => {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+        console.error("API Key not available for sentiment analysis.");
+        return 'neutral';
+    }
+    try {
+        const ai = new GoogleGenAI({ apiKey });
+        const prompt = `Analyze the sentiment of the following user text and respond with a single word: 'positive', 'negative', or 'neutral'. Do not add any other text or punctuation. User text: "${text}"`;
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+        });
+        
+        const sentiment = response.text.trim().toLowerCase();
+
+        if (sentiment === 'negative') return 'negative';
+        if (sentiment === 'positive') return 'positive';
+        return 'neutral';
+    } catch (e) {
+        console.error("Sentiment analysis failed:", e);
+        return 'neutral';
+    }
+  }, []);
 
   useEffect(() => {
     if (isOpen && !chatRef.current && !error) {
@@ -114,6 +139,15 @@ const Chatbot: React.FC = () => {
     setShowSuggestions(false);
     setIsLoading(true);
     setError('');
+
+    const sentiment = await analyzeSentiment(messageText);
+
+    if (sentiment === 'negative') {
+        const empatheticMessage: Message = { role: 'model', text: t('chatbot.sentimentNegative') };
+        setMessages(prev => [...prev, empatheticMessage]);
+        setIsLoading(false);
+        return;
+    }
 
     try {
         if (!chatRef.current) {
@@ -202,7 +236,7 @@ const Chatbot: React.FC = () => {
                     </div>
                 </div>
             )}
-            {error && (
+            {error && !messages.some(m => m.text === error) && (
                 <div className="message-bubble bot !bg-red-500/50">
                     <p>{error}</p>
                 </div>
@@ -237,12 +271,12 @@ const Chatbot: React.FC = () => {
               placeholder={language === 'es' ? "Escribe tu pregunta..." : "Escreva a sua pergunta..."}
               className="flex-1 bg-gray-800 border border-gray-600 rounded-full px-4 py-2 text-white focus:ring-tech-blue focus:border-tech-blue"
               aria-label="Chat input"
-              disabled={isLoading || !!error}
+              disabled={isLoading || (!!error && !messages.some(m => m.text === error))}
             />
             <button
               type="submit"
               className="bg-tech-blue rounded-full p-3 text-white disabled:bg-gray-500 transition-colors"
-              disabled={!userInput.trim() || isLoading || !!error}
+              disabled={!userInput.trim() || isLoading || (!!error && !messages.some(m => m.text === error))}
               aria-label="Send message"
             >
               <SendIcon />

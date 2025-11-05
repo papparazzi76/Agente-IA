@@ -77,9 +77,7 @@ const Footer: React.FC = () => {
             <div>
               <h3 className="font-semibold text-pure-white tracking-wider uppercase mb-4">{t('footer.accountTitle')}</h3>
               <ul className="space-y-2">
-                {currentUser ? (
-                  <li><Link to="/dashboard" className={linkStyle}>{t('footer.accountDashboard')}</Link></li>
-                ) : (
+                {!currentUser && (
                   <li><Link to="/auth" className={linkStyle}>{t('footer.accountLogin')}</Link></li>
                 )}
               </ul>

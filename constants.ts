@@ -9,9 +9,8 @@ import { module6 } from './modules/module_6';
 import { module7 } from './modules/module_7';
 import { module8 } from './modules/module_8';
 
-// FIX: Define and export documentContents to resolve an import error in ModulePage.tsx.
-// The content for these documents was not provided, so an empty object will
-// cause the download links to show a "coming soon" message as per the component's fallback logic.
+// Define and export documentContents to provide content for downloadable resources.
+// This resolves an import error in ModulePage.tsx and populates the download links.
 export const documentContents: { [key: string]: string } = {
   "politica_privacidad.html": `<!DOCTYPE html>
 <html lang="es">
