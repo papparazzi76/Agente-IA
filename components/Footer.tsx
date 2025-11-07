@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sequential-fade-in">
           <div className="col-span-1 md:col-span-1" style={{ animationDelay: '100ms' }}>
             <Link to="/">
-              <img src="https://i.postimg.cc/k4A2Yx28/agente-ia-academy-logo-transparent.png" alt="AgenteIA Academy Logo" className="h-24 w-auto" />
+              <img src="assets/agente-ia-academy-logo-transparent.png" alt="AgenteIA Academy Logo" className="h-24 w-auto" />
             </Link>
             <p className="text-sm text-gray-400 mt-2">
               {t('footer.tagline')}
