@@ -109,7 +109,8 @@ const AuthPage: React.FC = () => {
             {isLogin ? t('auth.loginTitle') : t('auth.registerTitle')}
           </h2>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
+        
+        <form className="space-y-6" onSubmit={handleSubmit} noValidate>
           <div className="space-y-4">
             <div>
               <label htmlFor="email-address" className="sr-only">{t('auth.emailLabel')}</label>

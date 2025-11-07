@@ -14,9 +14,17 @@ serve(async (req) => {
   }
 
   try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const anonKey = Deno.env.get('SUPABASE_ANON_KEY');
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+    if (!supabaseUrl || !anonKey || !serviceRoleKey) {
+      throw new Error('Server configuration error: Missing Supabase environment variables.');
+    }
+
     const userSupabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      supabaseUrl,
+      anonKey,
       { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
     )
     const { data: { user: adminUser } } = await userSupabaseClient.auth.getUser()
@@ -35,10 +43,7 @@ serve(async (req) => {
       throw new Error("Admin cannot delete themselves.")
     }
 
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey)
 
     const { data: deletedUser, error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userId)
       
@@ -52,7 +57,7 @@ serve(async (req) => {
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 400,
+      status: 500,
     })
   }
 })

@@ -14,9 +14,17 @@ serve(async (req) => {
   }
 
   try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const anonKey = Deno.env.get('SUPABASE_ANON_KEY');
+    const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+    if (!supabaseUrl || !anonKey || !serviceRoleKey) {
+      throw new Error('Server configuration error: Missing Supabase environment variables.');
+    }
+    
     const userSupabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      supabaseUrl,
+      anonKey,
       { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
     )
     const { data: { user } } = await userSupabaseClient.auth.getUser()
@@ -31,10 +39,7 @@ serve(async (req) => {
       throw new Error('Missing userId or updates in request body.')
     }
     
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey)
 
     const { data: updatedProfile, error: updateError } = await supabaseAdmin
       .from('profiles')
@@ -53,7 +58,7 @@ serve(async (req) => {
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 400,
+      status: 500,
     })
   }
 })

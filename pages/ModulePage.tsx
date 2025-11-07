@@ -7,7 +7,8 @@ import FlashcardViewer from '../components/FlashcardViewer';
 
 const ChevronLeftIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" /></svg>;
 const ChevronRightIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>;
-const DownloadIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3 text-tech-blue" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>;
+const DownloadIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3 text-tech-blue group-hover:text-tech-cyan transition-colors" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>;
+const DownloadIconDisabled = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" /></svg>;
 const CheckCircleIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3 text-tech-cyan flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>;
 
 const CompletionButton: React.FC<{moduleId: string, itemId: string, children: React.ReactNode}> = ({moduleId, itemId, children}) => {
@@ -60,6 +61,16 @@ const createHtmlContent = (title: string, content: string) => {
   ${formattedContent.replace(/\|/g, '</td><td>').replace(/---/g, '</td></tr><tr><td>')}
 </body>
 </html>`;
+};
+
+const createDownloadFilename = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^\w\s-]/g, '') // remove non-word chars
+      .replace(/[\s_-]+/g, '-') // collapse whitespace and replace by -
+      .replace(/^-+|-+$/g, ''); // remove leading/trailing dashes
 };
 
 const ModulePage: React.FC = () => {
@@ -144,8 +155,8 @@ const ModulePage: React.FC = () => {
                     <h2 className="font-poppins text-3xl text-pure-white mb-6">{module.resources.title[language]}</h2>
                     <div className="space-y-4">
                         {module.resources.downloads.map((item, i) => {
-                            const filename = item.url.split('/').pop() || '';
-                            const fileContent = documentContents[filename];
+                            const originalFilename = item.url.split('/').pop() || '';
+                            const fileContent = documentContents[originalFilename];
                             
                             if (fileContent) {
                                 const isFullHtml = fileContent.trim().toLowerCase().startsWith('<!doctype html>');
@@ -154,20 +165,30 @@ const ModulePage: React.FC = () => {
                                   : createHtmlContent(item.text[language], fileContent);
                                 
                                 const dataUri = `data:text/html;charset=utf-8,${encodeURIComponent(contentToEncode)}`;
-                                const downloadFilename = filename.replace('.pdf', '.html');
+                                const downloadFilename = `${createDownloadFilename(item.text['es'])}.html`;
                                 return (
-                                    <a href={dataUri} download={downloadFilename} key={i} className="flex items-center bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors">
-                                        <DownloadIcon/>
-                                        <span className="text-gray-200 font-medium">{item.text[language]}</span>
+                                    <a href={dataUri} download={downloadFilename} key={i} className="flex items-center justify-between bg-gray-800 p-4 rounded-lg hover:bg-gray-700/80 transition-all duration-300 group shadow-lg border border-gray-700 hover:border-tech-cyan/50">
+                                        <div className="flex items-center">
+                                            <DownloadIcon/>
+                                            <span className="text-gray-200 font-medium group-hover:text-tech-cyan transition-colors">{item.text[language]}</span>
+                                        </div>
+                                        <div className="text-sm font-semibold text-tech-blue bg-tech-blue/10 px-3 py-1 rounded-md border border-tech-blue/30 group-hover:bg-tech-blue group-hover:text-white transition-colors">
+                                            {t('module.download')}
+                                        </div>
                                     </a>
                                 );
                             }
                             
                             return (
-                                <a href="#" onClick={(e) => { e.preventDefault(); alert('Este material estará disponible próximamente.'); }} key={i} className="flex items-center bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-colors opacity-50 cursor-not-allowed">
-                                    <DownloadIcon/>
-                                    <span className="text-gray-200 font-medium">{item.text[language]}</span>
-                                </a>
+                                <div key={i} className="flex items-center justify-between bg-gray-800 p-4 rounded-lg transition-colors opacity-60 cursor-not-allowed border border-gray-700">
+                                    <div className="flex items-center">
+                                        <DownloadIconDisabled/>
+                                        <span className="text-gray-400 font-medium">{item.text[language]}</span>
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-500 bg-gray-700/50 px-3 py-1 rounded-md border border-gray-600">
+                                        {t('module.download')}
+                                    </div>
+                                </div>
                             );
                         })}
                     </div>

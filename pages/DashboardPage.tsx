@@ -32,15 +32,6 @@ const DashboardPage: React.FC = () => {
           <h2 className="text-2xl font-bold text-tech-cyan mb-2">{t('dashboard.playground.title')}</h2>
           <p className="text-gray-400">{t('dashboard.playground.description')}</p>
         </Link>
-        {/* FIX: Add links to CRM and Forum sections */}
-        <Link to="/crm" className="bg-gray-800/50 p-6 rounded-lg card-glow-border">
-          <h2 className="text-2xl font-bold text-tech-cyan mb-2">{t('dashboard.crm.title')}</h2>
-          <p className="text-gray-400">{t('dashboard.crm.description')}</p>
-        </Link>
-        <Link to="/foro" className="bg-gray-800/50 p-6 rounded-lg card-glow-border">
-          <h2 className="text-2xl font-bold text-tech-cyan mb-2">{t('dashboard.forum.title')}</h2>
-          <p className="text-gray-400">{t('dashboard.forum.description')}</p>
-        </Link>
       </div>
     </div>
   );

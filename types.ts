@@ -38,42 +38,9 @@ export interface Module {
   flashcards?: Flashcard[];
 }
 
-// FIX: Added missing CRM type definitions.
-// CRM Types
-export type PropertyType = 'Piso' | 'Chalet' | 'Adosado' | 'Local' | 'Oficina' | 'Terreno';
-export type PropertyStatus = 'Captación' | 'En Venta' | 'En Alquiler' | 'Reservado' | 'Vendido' | 'Alquilado';
-
-export interface Property {
-  id: string;
-  user_id: string;
-  created_at: string;
-  address: string;
-  price: number;
-  type: PropertyType;
-  status: PropertyStatus;
-  area: number;
-  bedrooms: number;
-  bathrooms: number;
-  description: string;
-  features: string;
-  photos: string[];
-}
-
-export type ContactStatus = 'Lead' | 'Cliente Comprador' | 'Cliente Vendedor' | 'Pasado Cliente' | 'Colaborador';
-
-export interface Contact {
-  id: string;
-  user_id: string;
-  created_at: string;
-  name: string;
-  email?: string | null;
-  phone?: string | null;
-  status: ContactStatus;
-  notes?: string | null;
-}
-
-// FIX: Added missing Forum type definitions.
-// Forum Types
+// FIX: Added missing types for the Forum feature.
+// These types are used in ForumContext and related pages to provide type safety
+// for data fetched from the database.
 export interface ForumSection {
   id: string;
   slug: string;
@@ -87,8 +54,8 @@ export interface ForumThread {
   user_id: string;
   title: string;
   created_at: string;
-  author_username?: string | null;
-  reply_count?: number | null;
+  author_username?: string;
+  reply_count?: number;
 }
 
 export interface ForumPost {
@@ -97,5 +64,5 @@ export interface ForumPost {
   user_id: string;
   content: string;
   created_at: string;
-  author_username?: string | null;
+  author_username?: string;
 }

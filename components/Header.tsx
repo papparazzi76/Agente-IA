@@ -53,12 +53,6 @@ const Header: React.FC = () => {
               <>
                 <NavLink to="/dashboard" className={navLinkClass}>{t('header.navDashboard')}</NavLink>
                 <NavLink to="/playground" className={navLinkClass}>{t('header.navPlayground')}</NavLink>
-                {/* FIX: Add CRM and Forum links for logged-in users. */}
-                <NavLink to="/crm" className={navLinkClass}>{t('header.navCrm')}</NavLink>
-                <NavLink to="/foro" className={navLinkClass}>{t('header.navForum')}</NavLink>
-                {currentUser.role === 'admin' && (
-                  <NavLink to="/admin" className={navLinkClass}>{t('header.navAdmin')}</NavLink>
-                )}
                 <button onClick={handleLogout} className="bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700 transition-all duration-300">
                   {t('header.navLogout')}
                 </button>
@@ -99,12 +93,6 @@ const Header: React.FC = () => {
             <>
               <NavLink to="/dashboard" className={navLinkClass} onClick={closeMenu}>{t('header.navDashboard')}</NavLink>
               <NavLink to="/playground" className={navLinkClass} onClick={closeMenu}>{t('header.navPlayground')}</NavLink>
-              {/* FIX: Add CRM and Forum links to mobile menu. */}
-              <NavLink to="/crm" className={navLinkClass} onClick={closeMenu}>{t('header.navCrm')}</NavLink>
-              <NavLink to="/foro" className={navLinkClass} onClick={closeMenu}>{t('header.navForum')}</NavLink>
-              {currentUser.role === 'admin' && (
-                  <NavLink to="/admin" className={navLinkClass} onClick={closeMenu}>{t('header.navAdmin')}</NavLink>
-              )}
               <button onClick={handleLogout} className="w-full text-left bg-red-600 text-white font-semibold py-2 px-3 rounded hover:bg-red-700 transition-all duration-300">
                 {t('header.navLogout')}
               </button>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth, UserProfile } from '../contexts/AuthContext';
@@ -20,7 +21,11 @@ const AdminPage: React.FC = () => {
   const loadUsers = useCallback(async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('get-all-users');
+      // FIX: Explicitly passing an empty body for the POST request to the Edge Function.
+      // Some environments or client versions can have issues with POST requests that have no body,
+      // resulting in a generic network error like "Failed to send a request".
+      // This ensures the request is well-formed.
+      const { data, error } = await supabase.functions.invoke('get-all-users', { body: {} });
       if (error) throw error;
       setUsers(data || []); 
     } catch (e: any) {
