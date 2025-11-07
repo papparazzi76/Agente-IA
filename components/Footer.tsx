@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sequential-fade-in">
           <div className="col-span-1 md:col-span-1" style={{ animationDelay: '100ms' }}>
             <Link to="/">
-              <img src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/Logo/logo-agente-ia.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL2xvZ28tYWdlbnRlLWlhLnBuZyIsImlhdCI6MTc2MTY1NTEyNCwiZXhwIjoxNzkzMTkxMTI0fQ.KxpCPaSsjvM-Nf0SFWOoEBVHiWaeicWyoA8UPQVa0J0" alt="AgenteIA Logo" className="h-24 w-auto" />
+              <img src="https://i.postimg.cc/k4A2Yx28/agente-ia-academy-logo-transparent.png" alt="AgenteIA Academy Logo" className="h-24 w-auto" />
             </Link>
             <p className="text-sm text-gray-400 mt-2">
               {t('footer.tagline')}
