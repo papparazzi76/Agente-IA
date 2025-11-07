@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useLanguage } from '../contexts/LanguageContext'
 
 const LanguageSwitcher: React.FC = () => {
   const { language, setLanguage } = useLanguage();
@@ -43,7 +43,7 @@ const Header: React.FC = () => {
       <nav className="container mx-auto px-6 py-2 relative">
         <div className="flex items-center justify-between">
           <NavLink to="/" className="transition-transform hover:scale-105">
-            <img src="https://i.postimg.cc/k4A2Yx28/agente-ia-academy-logo-transparent.png" alt="AgenteIA Academy Logo" className="h-24 w-auto" />
+            <img src="assets/agente-ia-academy-logo-transparent.png" alt="AgenteIA Academy Logo" className="h-24 w-auto" />
           </NavLink>
           <div className="hidden md:flex items-center space-x-4">
             <NavLink to="/" className={navLinkClass}>{t('header.navHome')}</NavLink>
