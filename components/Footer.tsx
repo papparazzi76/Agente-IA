@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sequential-fade-in">
           <div className="col-span-1 md:col-span-1" style={{ animationDelay: '100ms' }}>
             <Link to="/">
-              <img src="assets/agente-ia-academy-logo-transparent.png" alt="AgenteIA Academy Logo" className="h-24 w-auto" />
+              <img src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/Logo/logo-agente-ia.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL2xvZ28tYWdlbnRlLWlhLnBuZyIsImlhdCI6MTc2MTY1NTEyNCwiZXhwIjoxNzkzMTkxMTI0fQ.KxpCPaSsjvM-Nf0SFWOoEBVHiWaeicWyoA8UPQVa0J0" alt="AgenteIA Logo" className="h-24 w-auto" />
             </Link>
             <p className="text-sm text-gray-400 mt-2">
               {t('footer.tagline')}
@@ -68,10 +68,10 @@ const Footer: React.FC = () => {
           </div>
           <div className="col-span-1 md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-8" style={{ animationDelay: '200ms' }}>
             <div>
-              <h3 className="font-semibold text-pure-white tracking-wider uppercase mb-4">{t('footer.courseTitle')}</h3>
+              <h3 className="font-semibold text-pure-white tracking-wider uppercase mb-4">{t('footer.productsTitle')}</h3>
               <ul className="space-y-2">
-                <li><Link to="/temario" className={linkStyle}>{t('footer.courseSyllabus')}</Link></li>
-                <li><Link to="/compra" className={linkStyle}>{t('footer.coursePricing')}</Link></li>
+                <li><Link to="/marketplace" className={linkStyle}>{t('header.navMarketplace')}</Link></li>
+                <li><Link to="/precios" className={linkStyle}>{t('header.navPricing')}</Link></li>
               </ul>
             </div>
             <div>
@@ -79,6 +79,9 @@ const Footer: React.FC = () => {
               <ul className="space-y-2">
                 {!currentUser && (
                   <li><Link to="/auth" className={linkStyle}>{t('footer.accountLogin')}</Link></li>
+                )}
+                {currentUser && (
+                  <li><Link to="/dashboard" className={linkStyle}>{t('header.navDashboard')}</Link></li>
                 )}
               </ul>
             </div>

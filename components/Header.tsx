@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext'
+import { useLanguage } from '../contexts/LanguageContext';
 
 const LanguageSwitcher: React.FC = () => {
   const { language, setLanguage } = useLanguage();
@@ -43,12 +43,12 @@ const Header: React.FC = () => {
       <nav className="container mx-auto px-6 py-2 relative">
         <div className="flex items-center justify-between">
           <NavLink to="/" className="transition-transform hover:scale-105">
-            <img src="assets/agente-ia-academy-logo-transparent.png" alt="AgenteIA Academy Logo" className="h-24 w-auto" />
+            <img src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/Logo/logo-agente-ia.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL2xvZ28tYWdlbnRlLWlhLnBuZyIsImlhdCI6MTc2MTY1NTEyNCwiZXhwIjoxNzkzMTkxMTI0fQ.KxpCPaSsjvM-Nf0SFWOoEBVHiWaeicWyoA8UPQVa0J0" alt="AgenteIA Logo" className="h-24 w-auto" />
           </NavLink>
           <div className="hidden md:flex items-center space-x-4">
             <NavLink to="/" className={navLinkClass}>{t('header.navHome')}</NavLink>
-            <NavLink to="/temario" className={navLinkClass}>{t('header.navSyllabus')}</NavLink>
             <NavLink to="/marketplace" className={navLinkClass}>{t('header.navMarketplace')}</NavLink>
+            <NavLink to="/precios" className={navLinkClass}>{t('header.navPricing')}</NavLink>
             {currentUser ? (
               <>
                 <NavLink to="/dashboard" className={navLinkClass}>{t('header.navDashboard')}</NavLink>
@@ -87,8 +87,8 @@ const Header: React.FC = () => {
           `}
         >
           <NavLink to="/" className={navLinkClass} onClick={closeMenu}>{t('header.navHome')}</NavLink>
-          <NavLink to="/temario" className={navLinkClass} onClick={closeMenu}>{t('header.navSyllabus')}</NavLink>
           <NavLink to="/marketplace" className={navLinkClass} onClick={closeMenu}>{t('header.navMarketplace')}</NavLink>
+          <NavLink to="/precios" className={navLinkClass} onClick={closeMenu}>{t('header.navPricing')}</NavLink>
           {currentUser ? (
             <>
               <NavLink to="/dashboard" className={navLinkClass} onClick={closeMenu}>{t('header.navDashboard')}</NavLink>

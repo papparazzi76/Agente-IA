@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, FormEvent, useCallback } from 'react';
 import { GoogleGenAI, Chat, GenerateContentResponse, Content } from "@google/genai";
 import { useLanguage } from '../contexts/LanguageContext';
-import { modules } from '../constants';
 
 // Icons
 const ChatIcon = () => (
@@ -19,26 +18,21 @@ interface Message {
   text: string;
 }
 
-const generateCourseContext = (lang: 'es' | 'pt'): string => {
+const generateAppContext = (lang: 'es' | 'pt'): string => {
     const contextParts: string[] = [];
-    contextParts.push("Información del curso 'IA para Agentes Inmobiliarios':");
+    contextParts.push("Información de AgenteIA:");
     
-    modules.forEach(module => {
-        contextParts.push(`- Módulo ${module.id}: ${module.title[lang]}. Descripción: ${module.description[lang]}.`);
-    });
-
-    const playgroundInfo = lang === 'es'
-        ? "El curso tiene un precio base de 197€ (ajustado por país) y da acceso perpetuo al contenido. Incluye 30 días de acceso gratuito al 'Playground IA'. Después, el Playground es una membresía opcional de 19 €/mes en España, con pago recurrente y cancelación con 24h de antelación."
-        : "O curso tem um preço base de 197€ (ajustado por país) e dá acesso perpétuo ao conteúdo. Inclui 30 dias de acesso gratuito ao 'Playground IA'. Depois, o Playground é uma subscrição opcional de 19 €/mês em Espanha, com pagamento recorrente e cancelamento com 24h de antecedência.";
-
-    const updatesAndRefundInfo = lang === 'es'
-        ? "Todas las actualizaciones futuras del curso son gratuitas para quienes compraron el curso. Hay una política de reembolso de 14 días. Si un usuario solicita el reembolso dentro de este período, se le devuelve el importe completo y se cancela su acceso a todo el contenido, presente y futuro."
-        : "Todas as atualizações futuras do curso são gratuitas para quem comprou o curso. Existe uma política de reembolso de 14 dias. Se um utilizador solicitar o reembolso dentro deste período, o valor total é devolvido e o seu acesso a todo o conteúdo, presente e futuro, é cancelado.";
-
-    contextParts.push(playgroundInfo);
-    contextParts.push(updatesAndRefundInfo);
-    contextParts.push("El curso se ofrece en español y portugués.");
-    contextParts.push("Puedes ayudar a los usuarios a navegar el sitio. Las secciones son: Inicio (/), Temario (/temario), Área de Miembros (/dashboard), Playground IA (/playground) y Compra (/compra).");
+    if (lang === 'es') {
+        contextParts.push("Ofrecemos dos productos principales: Playground IA y Marketplace.");
+        contextParts.push("Playground IA es una suscripción mensual que da acceso a un conjunto de herramientas de IA para agentes inmobiliarios. El precio varía por país, por ejemplo, 19€/mes en España. El usuario puede ver los precios en la página /precios.");
+        contextParts.push("Marketplace es una tienda de servicios digitales a medida: diseño web, automatización, marketing, etc. Los clientes solicitan un presupuesto personalizado para estos servicios a través de la página /marketplace.");
+        contextParts.push("Puedes ayudar a los usuarios a navegar el sitio. Las secciones son: Inicio (/), Marketplace (/marketplace), Playground IA (/playground) y Precios (/precios).");
+    } else {
+        contextParts.push("Oferecemos dois produtos principais: Playground IA e Marketplace.");
+        contextParts.push("O Playground IA é uma subscrição mensal que dá acesso a um conjunto de ferramentas de IA para agentes imobiliários. O preço varia por país, por exemplo, 19€/mês em Espanha. O utilizador pode ver os preços na página /precios.");
+        contextParts.push("O Marketplace é uma loja de serviços digitais à medida: design web, automação, marketing, etc. Os clientes solicitam um orçamento personalizado para estes serviços através da página /marketplace.");
+        contextParts.push("Pode ajudar os utilizadores a navegar no site. As secções são: Início (/), Marketplace (/marketplace), Playground IA (/playground) e Preços (/precios).");
+    }
 
     return contextParts.join('\n');
 };
@@ -63,19 +57,19 @@ const Chatbot: React.FC = () => {
       }
       try {
         const ai = new GoogleGenAI({ apiKey });
-        const courseContext = generateCourseContext(language);
-        const systemInstruction = `Eres 'AgenteIA Asistente', un chatbot amigable y experto para el sitio web 'IA para Agentes Inmobiliarios'. Tu objetivo es actuar como un asistente de Preguntas Frecuentes (FAQs), ayudando a los usuarios con sus dudas sobre el curso y guiándolos por la plataforma.
+        const appContext = generateAppContext(language);
+        const systemInstruction = `Eres 'AgenteIA Asistente', un chatbot amigable y experto para el sitio web 'IA para Agentes Inmobiliarios'. Tu objetivo es actuar como un asistente de Preguntas Frecuentes (FAQs), ayudando a los usuarios con sus dudas sobre los productos (Playground y Marketplace) y guiándolos por la plataforma.
         - Sé conciso y directo.
-        - Utiliza la siguiente información para responder preguntas sobre el contenido, precio, acceso y estructura del curso:
-        ${courseContext}
-        - Si no sabes una respuesta, di que no tienes esa información pero que puedes ayudar con otros temas del curso.
+        - Utiliza la siguiente información para responder preguntas:
+        ${appContext}
+        - Si no sabes una respuesta, di que no tienes esa información pero que puedes ayudar con otros temas.
         - Responde siempre en el idioma de la conversación (español o portugués).
         - No inventes información. Basa tus respuestas en el contexto proporcionado.
         - Puedes usar formato Markdown simple (negritas y listas).`;
         
         const history: Content[] = [
             { role: 'user', parts: [{ text: "Hola" }] },
-            { role: 'model', parts: [{ text: language === 'es' ? "¡Hola! Soy tu asistente de IA. ¿Cómo puedo ayudarte a conocer nuestro curso para agentes inmobiliarios?" : "Olá! Sou o seu assistente de IA. Como posso ajudá-lo a conhecer o nosso curso para agentes imobiliários?" }] }
+            { role: 'model', parts: [{ text: language === 'es' ? "¡Hola! Soy tu asistente de IA. ¿En qué puedo ayudarte hoy?" : "Olá! Sou o seu assistente de IA. Em que posso ajudá-lo hoje?" }] }
         ];
 
         chatRef.current = ai.chats.create({

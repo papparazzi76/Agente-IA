@@ -3,9 +3,7 @@ import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
-import SyllabusPage from './pages/SyllabusPage';
-import ModulePage from './pages/ModulePage';
-import CourseLandingPage from './pages/CourseLandingPage';
+import PricingPage from './pages/CourseLandingPage';
 import AuthPage from './pages/AuthPage';
 import PlaygroundPage from './pages/PlaygroundPage';
 import ScrollToTop from './components/ScrollToTop';
@@ -31,11 +29,6 @@ const App: React.FC = () => {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/temario" element={<SyllabusPage />} />
-            <Route 
-              path="/modulo/:moduleId" 
-              element={<ProtectedRoute><ModulePage /></ProtectedRoute>} 
-            />
             <Route path="/marketplace" element={<MarketplacePage />} />
             <Route path="/marketplace/web-design" element={<WebDesignPage />} />
             <Route path="/marketplace/applied-ai" element={<AppliedAIPage />} />
@@ -43,8 +36,9 @@ const App: React.FC = () => {
             <Route path="/marketplace/automation-productivity" element={<AutomationProductivityPage />} />
             <Route path="/marketplace/legal-documentation" element={<LegalDocumentationPage />} />
             <Route path="/marketplace/premium-extras" element={<PremiumExtrasPage />} />
-            <Route path="/venta-curso" element={<CourseLandingPage />} />
-            <Route path="/compra" element={<Navigate to="/venta-curso" replace />} />
+            <Route path="/precios" element={<PricingPage />} />
+            <Route path="/venta-curso" element={<Navigate to="/precios" replace />} />
+            <Route path="/compra" element={<Navigate to="/precios" replace />} />
             <Route path="/auth" element={<AuthPage />} />
 
             <Route
