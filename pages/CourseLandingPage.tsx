@@ -133,7 +133,7 @@ const PricingPage: React.FC = () => {
     const detectCountry = async () => {
       setIsDetectingLocation(true);
       try {
-        const { data, error: invokeError } = await supabase.functions.invoke('ip-lookup');
+        const { data, error: invokeError } = await supabase.functions.invoke('ip-lookup', { body: {} });
 
         if (invokeError) {
           throw invokeError;

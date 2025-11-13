@@ -74,11 +74,11 @@ const HomePage: React.FC = () => {
                     </Link>
                   </div>
               </div>
-              <div className="relative h-80 md:h-96 w-full flex items-center justify-center mt-12 md:mt-0">
+              <div className="relative h-80 md:h-96 w-full flex items-center justify-center mt-12 md:mt-0 group cursor-pointer" onClick={() => navigate('/playground')}>
                   <img 
-                      src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/recursos/playground-demo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJyZWN1cnNvcy9wbGF5Z3JvdW5kLWRlbW8ucG5nIiwiaWF0IjoxNzYxNzU0MjQ3LCJleHAiOjE3OTMyOTAyNDd9.3F7iT8fH27GfL3hJ-4WJzY1fB2c9P-p_qG7tY8o9fJ8" 
+                      src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/recursos/a-smiling-real-estate-agent-sits-at-a-mo_7BUPzkcYTwWRlaUQNUeuIA_3_lyyjugSGOZV7DGjJzemg.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJyZWN1cnNvcy9hLXNtaWxpbmctcmVhbC1lc3RhdGUtYWdlbnQtc2l0cy1hdC1hLW1vXzdCVVB6a2NZVHdXUmxhVVFOVWV1SUFfM19seXlqdWdTR09aVjdER2pKemVtZy5qcGVnIiwiaWF0IjoxNzYyNTMyNjAzLCJleHAiOjE3OTQwNjg2MDN9.zHqedhFm1f1J6KnJuXRvtgMgdTbRTVsPvIXLJ8Uxwfc"
                       alt="Playground IA"
-                      className="relative z-10 w-full max-w-lg rounded-lg shadow-2xl shadow-tech-blue/20 border border-tech-blue/30 transform transition-transform hover:scale-105"
+                      className="relative z-10 w-full max-w-lg rounded-lg shadow-2xl shadow-tech-blue/20 border border-tech-blue/30 transform transition-transform duration-500 group-hover:scale-105"
                       loading="lazy" decoding="async"
                   />
               </div>
@@ -92,7 +92,7 @@ const HomePage: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-16 items-center">
               <div className="relative h-80 md:h-96 w-full flex items-center justify-center mt-12 md:mt-0 md:order-2">
                    <img 
-                      src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/recursos/marketplace-demo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJyZWN1cnNvcy9tYXJrZXRwbGFjZS1kZW1vLnBuZyIsImlhdCI6MTc2MTc1NDI4MywiZXhwIjoxNzkzMjkwMjgzfQ.u1kR22wV4G7v_o8B_tC8sY8Z_n7C5h_m_pE9g4m_xR0" 
+                      src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/recursos/Gemini_Generated_Image_a8g1qta8g1qta8g1.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJyZWN1cnNvcy9HZW1pbmlfR2VuZXJhdGVkX0ltYWdlX2E4ZzFxdGE4ZzFxdGE4ZzEucG5nIiwiaWF0IjoxNzYyNTMzMjA2LCJleHAiOjE3OTQwNjkyMDZ9.uFpq2IlxewTvXwoOCWGK1E1l2vSeRSNbOtOYY8X3tg8" 
                       alt="Marketplace de Servicios"
                       className="relative z-10 w-full max-w-lg rounded-lg shadow-2xl shadow-tech-cyan/20 border border-tech-cyan/30 transform transition-transform hover:scale-105"
                       loading="lazy" decoding="async"
