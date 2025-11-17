@@ -1,17 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import { supabase } from '../supabase';
 import { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
-
-export interface UserProfile {
-  id: string;
-  email: string;
-  role: 'student' | 'admin';
-  is_blocked?: boolean;
-  has_lifetime_access?: boolean;
-  has_accepted_rules?: boolean;
-  username?: string;
-  avatar_url?: string;
-}
+import { UserProfile } from '../types';
 
 export type CurrentUser = User & UserProfile;
 
@@ -48,22 +38,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         .select('*')
         .eq('id', user.id)
         .single();
+
     if (error) {
         console.error('Error fetching profile:', error.message);
         setCurrentUser(null);
-    } else {
+    } else if (profile) {
+        const lifetimeAccessEmails = ['maria.garcia@remax.es', 'rebeca.hernandez@remax.es'];
+        let effectiveProfile = profile;
+
+        if (user.email && lifetimeAccessEmails.includes(user.email) && !profile.has_lifetime_access) {
+            const { data: updatedProfile, error: updateError } = await supabase
+                .from('profiles')
+                .update({ has_lifetime_access: true })
+                .eq('id', user.id)
+                .select()
+                .single();
+            
+            if (updateError) {
+                console.error('Failed to grant lifetime access', updateError.message);
+            } else if (updatedProfile) {
+                effectiveProfile = updatedProfile;
+            }
+        }
+        
         const userWithProfile: CurrentUser = {
             ...user,
             id: user.id,
             email: user.email!,
-            role: profile?.role || 'student',
-            is_blocked: profile?.is_blocked || false,
-            has_lifetime_access: profile?.has_lifetime_access || false,
-            has_accepted_rules: profile?.has_accepted_rules || false,
-            username: profile?.username,
-            avatar_url: profile?.avatar_url,
+            role: effectiveProfile.role || 'student',
+            is_blocked: effectiveProfile.is_blocked || false,
+            has_lifetime_access: effectiveProfile.has_lifetime_access || false,
+            has_accepted_rules: effectiveProfile.has_accepted_rules || false,
+            username: effectiveProfile.username,
+            avatar_url: effectiveProfile.avatar_url,
         };
         setCurrentUser(userWithProfile);
+    } else {
+        setCurrentUser(null);
     }
   }, []);
 
@@ -105,8 +116,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   []);
 
   const signUp = useCallback(async (email: string, pass: string) => {
-    // The database trigger 'on_auth_user_created' (from the SQL script) 
-    // will now handle profile creation automatically upon sign-up.
     return supabase.auth.signUp({ email, password: pass });
   }, []);
 

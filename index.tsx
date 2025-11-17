@@ -4,6 +4,8 @@ import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { QuoteProvider } from './contexts/QuoteContext';
+import { ProgressProvider } from './contexts/ProgressContext';
+import { ForumProvider } from './contexts/ForumContext';
 
 
 const rootElement = document.getElementById('root');
@@ -16,9 +18,13 @@ root.render(
   <React.StrictMode>
     <LanguageProvider>
       <AuthProvider>
-          <QuoteProvider>
-            <App />
-          </QuoteProvider>
+        <ForumProvider>
+          <ProgressProvider>
+            <QuoteProvider>
+              <App />
+            </QuoteProvider>
+          </ProgressProvider>
+        </ForumProvider>
       </AuthProvider>
     </LanguageProvider>
   </React.StrictMode>

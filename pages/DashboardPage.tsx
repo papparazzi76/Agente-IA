@@ -23,7 +23,11 @@ const DashboardPage: React.FC = () => {
         </div>
       )}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Link to="/curso" className="bg-gray-800/50 p-6 rounded-lg card-glow-border">
+          <h2 className="text-2xl font-bold text-tech-cyan mb-2">{t('dashboard.course.title')}</h2>
+          <p className="text-gray-400">{t('dashboard.course.description')}</p>
+        </Link>
         <Link to="/playground" className="bg-gray-800/50 p-6 rounded-lg card-glow-border">
           <h2 className="text-2xl font-bold text-tech-cyan mb-2">{t('dashboard.playground.title')}</h2>
           <p className="text-gray-400">{t('dashboard.playground.description')}</p>

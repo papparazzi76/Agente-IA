@@ -22,19 +22,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
   }
 
   if (!currentUser) {
-    // Redirect them to the /auth page, but save the current location they were
-    // trying to go to. This allows us to send them along to that page after they login.
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
   
-  // Si el usuario está bloqueado, redirigir al dashboard con un mensaje
   if (currentUser.is_blocked) {
       return <Navigate to="/dashboard" state={{ error: t('auth.errorAccountBlocked') }} replace />;
   }
 
   if (roles && !roles.includes(currentUser.role)) {
-    // Redirect to dashboard if user role is not authorized
-    // Pass an error message in the state to be displayed on the dashboard
     return <Navigate to="/dashboard" state={{ error: t('auth.errorAccessDenied') }} replace />;
   }
 

@@ -1,7 +1,10 @@
 
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { useAuth, UserProfile } from '../contexts/AuthContext';
+// FIX: The `UserProfile` type is exported from `../types`, not `../contexts/AuthContext`.
+import { useAuth } from '../contexts/AuthContext';
+import { UserProfile } from '../types';
 import { supabase } from '../supabase';
 
 const ADMIN_EMAIL = 'admin@agenteia.com';

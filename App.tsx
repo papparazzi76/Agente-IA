@@ -19,6 +19,14 @@ import LegalDocumentationPage from './pages/LegalDocumentationPage';
 import PremiumExtrasPage from './pages/PremiumExtrasPage';
 import DashboardPage from './pages/DashboardPage';
 import QuoteRequestModal from './components/QuoteRequestModal';
+import SyllabusPage from './pages/SyllabusPage';
+import ModuleDetailPage from './pages/ModuleDetailPage';
+import AdminPage from './pages/AdminPage';
+import ForumPage from './pages/ForumPage';
+import ForumHomePage from './pages/forum/ForumHomePage';
+import ThreadListPage from './pages/forum/ThreadListPage';
+import NewThreadPage from './pages/forum/NewThreadPage';
+import ThreadDetailPage from './pages/forum/ThreadDetailPage';
 
 const App: React.FC = () => {
   return (
@@ -49,6 +57,27 @@ const App: React.FC = () => {
             <Route
               path="/playground"
               element={<ProtectedRoute><PlaygroundPage /></ProtectedRoute>}
+            />
+
+            <Route
+              path="/curso"
+              element={<ProtectedRoute><SyllabusPage /></ProtectedRoute>}
+            />
+            <Route
+              path="/modulo/:id"
+              element={<ProtectedRoute><ModuleDetailPage /></ProtectedRoute>}
+            />
+
+            <Route path="/foro" element={<ProtectedRoute><ForumPage /></ProtectedRoute>}>
+              <Route index element={<ForumHomePage />} />
+              <Route path=":sectionSlug" element={<ThreadListPage />} />
+              <Route path=":sectionSlug/new" element={<NewThreadPage />} />
+              <Route path=":sectionSlug/:threadId" element={<ThreadDetailPage />} />
+            </Route>
+
+            <Route
+              path="/admin"
+              element={<ProtectedRoute roles={['admin']}><AdminPage /></ProtectedRoute>}
             />
             
             <Route path="*" element={<Navigate to="/" replace />} />

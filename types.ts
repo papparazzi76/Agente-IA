@@ -66,3 +66,14 @@ export interface ForumPost {
   created_at: string;
   author_username?: string;
 }
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  role: 'student' | 'admin';
+  is_blocked?: boolean;
+  has_lifetime_access?: boolean;
+  has_accepted_rules?: boolean;
+  username?: string;
+  avatar_url?: string;
+}
