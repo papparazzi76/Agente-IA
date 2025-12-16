@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { Link } from 'react-router-dom';
-import { useQuote } from '../contexts/QuoteContext';
 
 // Category Icons
 const WebIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-tech-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>;
@@ -24,11 +23,6 @@ interface CategoryCardProps {
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ icon, titleKey, descKey, items, priceKey, linkTo }) => {
     const { t } = useLanguage();
-    const { openModal } = useQuote();
-
-    const handleQuoteRequest = () => {
-        openModal(items);
-    };
 
     return (
         <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden border border-tech-blue/20 group card-glow-border h-full flex flex-col">
@@ -50,9 +44,12 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ icon, titleKey, descKey, it
             </div>
             <div className="mt-auto bg-gray-900/40 px-8 py-4 border-t border-tech-blue/20 flex justify-between items-center">
                 <span className="font-bold text-lg text-tech-cyan">{t(priceKey)}</span>
-                <button onClick={handleQuoteRequest} className="bg-transparent border-2 border-tech-cyan text-tech-cyan font-semibold py-2 px-4 rounded-lg group-hover:bg-tech-cyan group-hover:text-white transition-all duration-300">
+                <Link 
+                    to={linkTo || '#'} 
+                    className="bg-transparent border-2 border-tech-cyan text-tech-cyan font-semibold py-2 px-4 rounded-lg group-hover:bg-tech-cyan group-hover:text-white transition-all duration-300 inline-block text-center"
+                >
                     {t('marketplace.viewProducts')}
-                </button>
+                </Link>
             </div>
         </div>
     );

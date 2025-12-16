@@ -19,7 +19,7 @@ const PricingPage: React.FC = () => {
   const priceSectionRef = useRef<HTMLElement>(null);
   const [benefitsRef, benefitsVisible] = useScrollAnimation<HTMLElement>({ threshold: 0.2 });
 
-  const priceInfo = { price: 15, code: 'EUR' };
+  const priceInfo = { price: 19, code: 'EUR' };
 
   const formattedPrice = new Intl.NumberFormat('es-ES', {
     style: 'currency',

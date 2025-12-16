@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { GoogleGenAI, Modality } from "@google/genai";
 import { useLanguage } from '../../contexts/LanguageContext';
 import VoiceInputButton from './VoiceInputButton';
+import TutorialModal, { TutorialStep } from '../TutorialModal';
 
 const decorationStyles = [
     { key: 'styleMinimalist' }, { key: 'styleIndustrial' },
@@ -22,9 +23,10 @@ const UploadIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 
 const DownloadIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>;
 
 const ImageGenerator: React.FC = () => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isTutorialOpen, setIsTutorialOpen] = useState(false);
     
     // State for text-to-image
     const [prompt, setPrompt] = useState('');
@@ -36,6 +38,42 @@ const ImageGenerator: React.FC = () => {
     const [editRoomType, setEditRoomType] = useState(roomTypes[0].key);
     const [editDecorationStyle, setEditDecorationStyle] = useState(decorationStyles[0].key);
     const [customEditPrompt, setCustomEditPrompt] = useState('');
+
+    const tutorialSteps: TutorialStep[] = language === 'es' ? [
+        {
+            title: "Generar Imágenes desde Cero",
+            content: "Describe la imagen que quieres en el cuadro de texto. Sé detallado con el estilo, la iluminación y los muebles. Ej: 'Salón moderno con grandes ventanales y luz natural'. Pulsa 'Generar Imagen'."
+        },
+        {
+            title: "Subir Imagen para Editar",
+            content: "Si quieres modificar una foto real (ej. Home Staging Virtual), pulsa en <strong>'Seleccionar Imagen'</strong>. Esto abrirá el modo de edición."
+        },
+        {
+            title: "Ediciones Rápidas",
+            content: "Usa el botón <strong>'Eliminar Muebles'</strong> para vaciar una habitación automáticamente. O selecciona un tipo de estancia y estilo para <strong>'Redecorar'</strong> el espacio con un solo clic."
+        },
+        {
+            title: "Edición Personalizada",
+            content: "¿Quieres algo específico? En el cuadro 'Edición Personalizada', escribe instrucciones como 'cambia el suelo a madera' o 'añade una planta en la esquina'."
+        }
+    ] : [
+        {
+            title: "Gerar Imagens do Zero",
+            content: "Descreva a imagem que pretende na caixa de texto. Seja detalhado com o estilo, a iluminação e os móveis. Ex: 'Sala moderna com grandes janelas e luz natural'. Clique em 'Gerar Imagem'."
+        },
+        {
+            title: "Carregar Imagem para Editar",
+            content: "Se quiser modificar uma foto real (ex. Home Staging Virtual), clique em <strong>'Selecionar Imagem'</strong>. Isto abrirá o modo de edição."
+        },
+        {
+            title: "Edições Rápidas",
+            content: "Use o botão <strong>'Remover Mobília'</strong> para esvaziar um cómodo automaticamente. Ou selecione um tipo de divisão e estilo para <strong>'Redecorar'</strong> o espaço com um clique."
+        },
+        {
+            title: "Edição Personalizada",
+            content: "Quer algo específico? Na caixa 'Edição Personalizada', escreva instruções como 'muda o chão para madeira' ou 'adiciona uma planta no canto'."
+        }
+    ];
 
     const handleDownload = (imageUrl: string, filename: string) => {
         if (!imageUrl) return;
@@ -151,7 +189,18 @@ const ImageGenerator: React.FC = () => {
 
     return (
         <div>
-            <h2 className="text-2xl font-bold font-poppins mb-2">{t('playground.imageGenerator.title')}</h2>
+            <div className="flex items-center mb-2">
+                <h2 className="text-2xl font-bold font-poppins">{t('playground.imageGenerator.title')}</h2>
+                <button 
+                    onClick={() => setIsTutorialOpen(true)}
+                    className="ml-3 text-gray-400 hover:text-tech-cyan transition-colors"
+                    title="Ver Tutorial"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+            </div>
             <p className="text-gray-400 mb-6">{t('playground.imageGenerator.description')}</p>
 
             {!originalImage ? (
@@ -312,6 +361,13 @@ const ImageGenerator: React.FC = () => {
                     </div>
                 )}
             </div>
+
+            <TutorialModal 
+                isOpen={isTutorialOpen} 
+                onClose={() => setIsTutorialOpen(false)} 
+                steps={tutorialSteps} 
+                toolTitle={t('playground.imageGenerator.title')} 
+            />
         </div>
     );
 };

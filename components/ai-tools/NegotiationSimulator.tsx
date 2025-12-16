@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, FormEvent, useCallback } from 'react';
 import { GoogleGenAI, Chat } from "@google/genai";
 import { useLanguage } from '../../contexts/LanguageContext';
+import TutorialModal, { TutorialStep } from '../TutorialModal';
 
 const SendIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
@@ -25,9 +26,46 @@ const NegotiationSimulator: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [simulationState, setSimulationState] = useState<'selecting_personality' | 'negotiating' | 'finished'>('selecting_personality');
+    const [isTutorialOpen, setIsTutorialOpen] = useState(false);
     
     const chatRef = useRef<Chat | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const tutorialSteps: TutorialStep[] = language === 'es' ? [
+        {
+            title: "Elige tu Oponente",
+            content: "Para empezar, escribe el número (1-4) de la personalidad con la que quieres practicar. Cada una tiene objeciones y estilos diferentes."
+        },
+        {
+            title: "Inicia la Conversación",
+            content: "Una vez seleccionada la personalidad, tú debes iniciar la charla. Imagina que estás en el salón del propietario intentando captar la propiedad."
+        },
+        {
+            title: "Practica tus Argumentos",
+            content: "La IA te pondrá objeciones difíciles (precio, comisiones, exclusividad). Responde con tus mejores argumentos. El objetivo es convencerla."
+        },
+        {
+            title: "Recibe Feedback",
+            content: "Cuando termines, o si te atascas, escribe <strong>'TERMINAR SIMULACIÓN'</strong>. La IA analizará tu desempeño y te dará consejos para mejorar."
+        }
+    ] : [
+        {
+            title: "Escolha o seu Oponente",
+            content: "Para começar, escreva o número (1-4) da personalidade com a qual quer praticar. Cada uma tem objeções e estilos diferentes."
+        },
+        {
+            title: "Inicie a Conversa",
+            content: "Uma vez selecionada a personalidade, você deve iniciar a conversa. Imagine que está na sala do proprietário a tentar angariar o imóvel."
+        },
+        {
+            title: "Pratique os seus Argumentos",
+            content: "A IA colocará objeções difíceis (preço, comissões, exclusividade). Responda com os seus melhores argumentos. O objetivo é convencê-la."
+        },
+        {
+            title: "Receba Feedback",
+            content: "Quando terminar, ou se ficar bloqueado, escreva <strong>'TERMINAR SIMULAÇÃO'</strong>. A IA analisará o seu desempenho e dar-lhe-á conselhos para melhorar."
+        }
+    ];
 
     const getSystemInstruction = (personalityKey: string): string => {
         const baseInstruction = `
@@ -245,7 +283,18 @@ Inmediatamente después de que termine, debes abandonar tu papel de propietario 
 
     return (
         <div>
-            <h2 className="text-2xl font-bold font-poppins mb-2">{t('playground.negotiationSimulator.title')}</h2>
+            <div className="flex items-center mb-2">
+                <h2 className="text-2xl font-bold font-poppins">{t('playground.negotiationSimulator.title')}</h2>
+                <button 
+                    onClick={() => setIsTutorialOpen(true)}
+                    className="ml-3 text-gray-400 hover:text-tech-cyan transition-colors"
+                    title="Ver Tutorial"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+            </div>
             <p className="text-gray-400 mb-6">{t('playground.negotiationSimulator.description')}</p>
 
             <div className="flex-1 overflow-y-auto flex flex-col space-y-2 bg-gray-800/50 p-4 rounded-md min-h-[400px] max-h-[60vh]">
@@ -299,6 +348,13 @@ Inmediatamente después de que termine, debes abandonar tu papel de propietario 
                     </form>
                 )}
             </div>
+
+            <TutorialModal 
+                isOpen={isTutorialOpen} 
+                onClose={() => setIsTutorialOpen(false)} 
+                steps={tutorialSteps} 
+                toolTitle={t('playground.negotiationSimulator.title')} 
+            />
         </div>
     );
 };

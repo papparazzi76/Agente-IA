@@ -6,6 +6,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { QuoteProvider } from './contexts/QuoteContext';
 import { ProgressProvider } from './contexts/ProgressContext';
 import { ForumProvider } from './contexts/ForumContext';
+import ErrorBoundary from './components/ErrorBoundary';
 
 
 const rootElement = document.getElementById('root');
@@ -16,16 +17,18 @@ if (!rootElement) {
 const root = createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <LanguageProvider>
-      <AuthProvider>
-        <ForumProvider>
-          <ProgressProvider>
-            <QuoteProvider>
-              <App />
-            </QuoteProvider>
-          </ProgressProvider>
-        </ForumProvider>
-      </AuthProvider>
-    </LanguageProvider>
+    <ErrorBoundary>
+      <LanguageProvider>
+        <AuthProvider>
+          <ForumProvider>
+            <ProgressProvider>
+              <QuoteProvider>
+                <App />
+              </QuoteProvider>
+            </ProgressProvider>
+          </ForumProvider>
+        </AuthProvider>
+      </LanguageProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );

@@ -1,18 +1,56 @@
 import React, { useState } from 'react';
 import { GoogleGenAI } from "@google/genai";
 import { useLanguage } from '../../contexts/LanguageContext';
+import TutorialModal, { TutorialStep } from '../TutorialModal';
 
 const LeadScoringAssistant: React.FC = () => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [leadEmail, setLeadEmail] = useState('');
     const [leadSource, setLeadSource] = useState('Website Form');
     const [behavior, setBehavior] = useState('');
     const [emailEngagement, setEmailEngagement] = useState('');
     const [demographics, setDemographics] = useState('');
+    const [isTutorialOpen, setIsTutorialOpen] = useState(false);
     
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [result, setResult] = useState('');
+
+    const tutorialSteps: TutorialStep[] = language === 'es' ? [
+        {
+            title: "Introduce los Datos del Lead",
+            content: "Completa los campos con la información que tengas. El <strong>Email</strong> es opcional, pero la <strong>Fuente</strong> es clave (un referido vale más que un lead frío)."
+        },
+        {
+            title: "Describe el Comportamiento",
+            content: "¿Qué ha hecho en tu web? Ej: 'Visitó la página de precios 3 veces' o 'Usó la calculadora de hipotecas'. Estas son señales de alta intención."
+        },
+        {
+            title: "Añade Contexto Demográfico",
+            content: "Si sabes algo sobre su situación (ej. 'Pareja con hijos buscando colegio'), añádelo en el campo de datos demográficos. Ayuda a la IA a evaluar la urgencia."
+        },
+        {
+            title: "Interpreta el Score",
+            content: "La IA te dará una puntuación sobre 100 y una <strong>Prioridad</strong> (Alta, Media, Baja). Úsalo para decidir a quién llamas primero hoy."
+        }
+    ] : [
+        {
+            title: "Introduza os Dados do Lead",
+            content: "Preencha os campos com a informação que tiver. O <strong>E-mail</strong> é opcional, mas a <strong>Fonte</strong> é chave (uma referência vale mais do que um lead frio)."
+        },
+        {
+            title: "Descreva o Comportamento",
+            content: "O que fez no seu site? Ex: 'Visitou a página de preços 3 vezes' ou 'Usou a calculadora de hipotecas'. Estes são sinais de alta intenção."
+        },
+        {
+            title: "Adicione Contexto Demográfico",
+            content: "Se souber algo sobre a sua situação (ex. 'Casal com filhos à procura de escola'), adicione-o no campo de dados demográficos. Ajuda a IA a avaliar a urgência."
+        },
+        {
+            title: "Interprete o Score",
+            content: "A IA dar-lhe-á uma pontuação sobre 100 e uma <strong>Prioridade</strong> (Alta, Média, Baixa). Use-o para decidir a quem ligar primeiro hoje."
+        }
+    ];
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -110,7 +148,18 @@ Considera estos factores para tu puntuación:
 
     return (
         <div>
-            <h2 className="text-2xl font-bold font-poppins mb-2">{t('playground.leadScoringAssistant.title')}</h2>
+            <div className="flex items-center mb-2">
+                <h2 className="text-2xl font-bold font-poppins">{t('playground.leadScoringAssistant.title')}</h2>
+                <button 
+                    onClick={() => setIsTutorialOpen(true)}
+                    className="ml-3 text-gray-400 hover:text-tech-cyan transition-colors"
+                    title="Ver Tutorial"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+            </div>
             <p className="text-gray-400 mb-6">{t('playground.leadScoringAssistant.description')}</p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -164,6 +213,13 @@ Considera estos factores para tu puntuación:
                     </div>
                 </div>
             )}
+
+            <TutorialModal 
+                isOpen={isTutorialOpen} 
+                onClose={() => setIsTutorialOpen(false)} 
+                steps={tutorialSteps} 
+                toolTitle={t('playground.leadScoringAssistant.title')} 
+            />
         </div>
     );
 };

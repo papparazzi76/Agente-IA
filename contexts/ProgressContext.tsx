@@ -36,32 +36,25 @@ const getCompletableItems = (module: Module): string[] => {
 };
 
 export const ProgressProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [moduleProgress, setModuleProgress] = useState<ModuleProgress>({});
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
+  // Use lazy initialization to load state from localStorage immediately
+  const [moduleProgress, setModuleProgress] = useState<ModuleProgress>(() => {
     try {
       const savedProgress = localStorage.getItem(PROGRESS_STORAGE_KEY);
-      if (savedProgress) {
-        setModuleProgress(JSON.parse(savedProgress));
-      }
+      return savedProgress ? JSON.parse(savedProgress) : {};
     } catch (error) {
       console.error("Failed to load progress from localStorage", error);
-      localStorage.removeItem(PROGRESS_STORAGE_KEY);
-    } finally {
-      setLoading(false);
+      return {};
     }
-  }, []);
+  });
 
+  // Save to localStorage whenever moduleProgress changes
   useEffect(() => {
-    if (!loading) {
-        try {
-            localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(moduleProgress));
-        } catch (error) {
-            console.error("Failed to save progress to localStorage", error);
-        }
+    try {
+        localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(moduleProgress));
+    } catch (error) {
+        console.error("Failed to save progress to localStorage", error);
     }
-  }, [moduleProgress, loading]);
+  }, [moduleProgress]);
 
   const toggleItemComplete = useCallback((moduleId: string, itemId: string) => {
     setModuleProgress(prev => {
@@ -111,7 +104,7 @@ export const ProgressProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   return (
     <ProgressContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </ProgressContext.Provider>
   );
 };

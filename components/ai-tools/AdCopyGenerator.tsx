@@ -3,6 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 import { useLanguage } from '../../contexts/LanguageContext';
 import PromptManager from './PromptManager';
 import VoiceInputButton from './VoiceInputButton';
+import TutorialModal, { TutorialStep } from '../TutorialModal';
 
 const defaultAdCopyPrompt = {
     name: "Generador de Anuncios Estándar",
@@ -32,7 +33,7 @@ interface AdCopyGeneratorProps {
 }
 
 const AdCopyGenerator: React.FC<AdCopyGeneratorProps> = ({ initialData, onSave }) => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [propertyType, setPropertyType] = useState('');
     const [location, setLocation] = useState('');
     const [features, setFeatures] = useState('');
@@ -42,6 +43,43 @@ const AdCopyGenerator: React.FC<AdCopyGeneratorProps> = ({ initialData, onSave }
     const [result, setResult] = useState('');
     const [copied, setCopied] = useState(false);
     const [activePrompt, setActivePrompt] = useState(defaultAdCopyPrompt.content);
+    const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+
+    const tutorialSteps: TutorialStep[] = language === 'es' ? [
+        {
+            title: "Define la Propiedad",
+            content: "Comienza ingresando los datos básicos de la propiedad: <strong>Tipo</strong> (ej. Ático), <strong>Ubicación</strong> y las <strong>Características clave</strong>. Cuanto más específico seas, mejor será el resultado."
+        },
+        {
+            title: "Usa el Micrófono",
+            content: "Para ahorrar tiempo, puedes usar el botón del <strong>micrófono</strong> en los campos de texto y dictar la información en lugar de escribirla."
+        },
+        {
+            title: "Define tu Audiencia",
+            content: "El campo <strong>Público Objetivo</strong> es crucial. No es lo mismo escribir para 'inversores' que para 'familias con niños'. La IA adaptará el tono del mensaje según lo que pongas aquí."
+        },
+        {
+            title: "Gestiona los Prompts",
+            content: "Usa la sección <strong>'Gestionar Prompts'</strong> arriba para modificar cómo la IA debe escribir el anuncio. Puedes guardar tus propias estructuras (ej. 'Anuncio corto y agresivo') para usarlas siempre."
+        }
+    ] : [
+        {
+            title: "Defina a Propriedade",
+            content: "Comece por inserir os dados básicos da propriedade: <strong>Tipo</strong> (ex. Cobertura), <strong>Localização</strong> e as <strong>Características chave</strong>. Quanto mais específico for, melhor será o resultado."
+        },
+        {
+            title: "Use o Microfone",
+            content: "Para poupar tempo, pode usar o botão do <strong>microfone</strong> nos campos de texto e ditar a informação em vez de escrever."
+        },
+        {
+            title: "Defina a sua Audiência",
+            content: "O campo <strong>Público-Alvo</strong> é crucial. Não é a mesma coisa escrever para 'investidores' do que para 'famílias com crianças'. A IA adaptará o tom da mensagem conforme o que colocar aqui."
+        },
+        {
+            title: "Gerencie os Prompts",
+            content: "Use a secção <strong>'Gerir Prompts'</strong> acima para modificar como a IA deve escrever o anúncio. Pode guardar as suas próprias estruturas (ex. 'Anúncio curto e agressivo') para usar sempre."
+        }
+    ];
 
     useEffect(() => {
         if (initialData) {
@@ -99,7 +137,18 @@ const AdCopyGenerator: React.FC<AdCopyGeneratorProps> = ({ initialData, onSave }
 
     return (
         <div>
-            <h2 className="text-2xl font-bold font-poppins mb-2">{t('playground.adCopyGenerator.title')}</h2>
+            <div className="flex items-center mb-2">
+                <h2 className="text-2xl font-bold font-poppins">{t('playground.adCopyGenerator.title')}</h2>
+                <button 
+                    onClick={() => setIsTutorialOpen(true)}
+                    className="ml-3 text-gray-400 hover:text-tech-cyan transition-colors"
+                    title="Ver Tutorial"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+            </div>
             <p className="text-gray-400 mb-6">{t('playground.adCopyGenerator.description')}</p>
             
             <PromptManager 
@@ -165,6 +214,13 @@ const AdCopyGenerator: React.FC<AdCopyGeneratorProps> = ({ initialData, onSave }
                     </div>
                 </div>
             )}
+            
+            <TutorialModal 
+                isOpen={isTutorialOpen} 
+                onClose={() => setIsTutorialOpen(false)} 
+                steps={tutorialSteps} 
+                toolTitle={t('playground.adCopyGenerator.title')} 
+            />
         </div>
     );
 };
