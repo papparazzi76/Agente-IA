@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
@@ -55,6 +56,49 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ icon, titleKey, descKey, it
     );
 };
 
+const PaginationControls: React.FC<{ 
+  totalPages: number, 
+  currentPage: number, 
+  onPageChange: (p: number) => void 
+}> = ({ totalPages, currentPage, onPageChange }) => {
+  const { t } = useLanguage();
+  if (totalPages <= 1) return null;
+
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  return (
+      <div className="flex justify-center items-center space-x-2 mt-12">
+          <button
+              onClick={() => onPageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-800 text-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors"
+          >
+              &larr; {t('pagination.previous')}
+          </button>
+          {pageNumbers.map(number => (
+              <button
+                  key={number}
+                  onClick={() => onPageChange(number)}
+                  className={`px-4 py-2 rounded-md transition-colors ${
+                      currentPage === number
+                          ? 'bg-tech-cyan text-corporate-dark font-bold'
+                          : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+              >
+                  {number}
+              </button>
+          ))}
+          <button
+              onClick={() => onPageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-800 text-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors"
+          >
+              {t('pagination.next')} &rarr;
+          </button>
+      </div>
+  );
+};
+
 const MarketplacePage: React.FC = () => {
     const { t } = useLanguage();
     const categoriesRef = useRef<HTMLElement>(null);
@@ -95,45 +139,6 @@ const MarketplacePage: React.FC = () => {
         categoriesRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    const PaginationControls = () => {
-        if (totalPages <= 1) return null;
-
-        const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-
-        return (
-            <div className="flex justify-center items-center space-x-2 mt-12">
-                <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 bg-gray-800 text-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors"
-                >
-                    &larr; {t('pagination.previous')}
-                </button>
-                {pageNumbers.map(number => (
-                    <button
-                        key={number}
-                        onClick={() => handlePageChange(number)}
-                        className={`px-4 py-2 rounded-md transition-colors ${
-                            currentPage === number
-                                ? 'bg-tech-cyan text-corporate-dark font-bold'
-                                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                        }`}
-                    >
-                        {number}
-                    </button>
-                ))}
-                <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 bg-gray-800 text-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors"
-                >
-                    {t('pagination.next')} &rarr;
-                </button>
-            </div>
-        );
-    };
-
-
     return (
         <div className="animate-fadeIn">
             <section className="relative text-pure-white bg-corporate-dark overflow-hidden">
@@ -170,7 +175,11 @@ const MarketplacePage: React.FC = () => {
                             <CategoryCard key={cat.titleKey} {...cat} />
                         ))}
                     </div>
-                    <PaginationControls />
+                    <PaginationControls 
+                      totalPages={totalPages} 
+                      currentPage={currentPage} 
+                      onPageChange={handlePageChange} 
+                    />
                 </div>
             </section>
         </div>

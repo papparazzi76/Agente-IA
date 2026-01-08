@@ -76,7 +76,7 @@ const HomePage: React.FC = () => {
               </div>
               <div className="relative h-80 md:h-96 w-full flex items-center justify-center mt-12 md:mt-0 group cursor-pointer" onClick={() => navigate('/playground')}>
                   <img 
-                      src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/recursos/a-smiling-real-estate-agent-sits-at-a-mo_7BUPzkcYTwWRlaUQNUeuIA_3_lyyjugSGOZV7DGjJzemg.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJyZWN1cnNvcy9hLXNtaWxpbmctcmVhbC1lc3RhdGUtYWdlbnQtc2l0cy1hdC1hLW1vXzdCVVB6a2NZVHdXUmxhVVFOVWV1SUFfM19seXlqdWdTR09aVjdER2pKemVtZy5qcGVnIiwiaWF0IjoxNzYyNTMyNjAzLCJleHAiOjE3OTQwNjg2MDN9.zHqedhFm1f1J6KnJuXRvtgMgdTbRTVsPvIXLJ8Uxwfc"
+                      src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?auto=format&fit=crop&q=80&w=1000"
                       alt="Playground IA"
                       className="relative z-10 w-full max-w-lg rounded-lg shadow-2xl shadow-tech-blue/20 border border-tech-blue/30 transform transition-transform duration-500 group-hover:scale-105"
                       loading="lazy" decoding="async"
@@ -92,7 +92,7 @@ const HomePage: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-16 items-center">
               <div className="relative h-80 md:h-96 w-full flex items-center justify-center mt-12 md:mt-0 md:order-2">
                    <img 
-                      src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/recursos/Gemini_Generated_Image_a8g1qta8g1qta8g1.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJyZWN1cnNvcy9HZW1pbmlfR2VuZXJhdGVkX0ltYWdlX2E4ZzFxdGE4ZzFxdGE4ZzEucG5nIiwiaWF0IjoxNzYyNTMzMjA2LCJleHAiOjE3OTQwNjkyMDZ9.uFpq2IlxewTvXwoOCWGK1E1l2vSeRSNbOtOYY8X3tg8" 
+                      src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000" 
                       alt="Marketplace de Servicios"
                       className="relative z-10 w-full max-w-lg rounded-lg shadow-2xl shadow-tech-cyan/20 border border-tech-cyan/30 transform transition-transform hover:scale-105"
                       loading="lazy" decoding="async"

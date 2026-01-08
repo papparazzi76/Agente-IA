@@ -1,13 +1,18 @@
 
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-// FIX: The `UserProfile` type is exported from `../types`, not `../contexts/AuthContext`.
 import { useAuth } from '../contexts/AuthContext';
 import { UserProfile } from '../types';
 import { supabase } from '../supabase';
 
 const ADMIN_EMAIL = 'admin@agenteia.com';
+
+const UserStatus: React.FC<{ user: UserProfile }> = ({ user }) => {
+  const { t } = useLanguage();
+  if (user.is_blocked) return <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-500/20 text-red-300">{t('admin.statusBlocked')}</span>;
+  if (user.has_lifetime_access) return <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-500/20 text-green-300">{t('admin.statusLifetime')}</span>;
+  return <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-500/20 text-blue-300">{t('admin.statusActive')}</span>;
+};
 
 const AdminPage: React.FC = () => {
   const { t } = useLanguage();
@@ -24,10 +29,6 @@ const AdminPage: React.FC = () => {
   const loadUsers = useCallback(async () => {
     setIsLoading(true);
     try {
-      // FIX: Explicitly passing an empty body for the POST request to the Edge Function.
-      // Some environments or client versions can have issues with POST requests that have no body,
-      // resulting in a generic network error like "Failed to send a request".
-      // This ensures the request is well-formed.
       const { data, error } = await supabase.functions.invoke('get-all-users', { body: {} });
       if (error) throw error;
       setUsers(data || []); 
@@ -92,12 +93,6 @@ const AdminPage: React.FC = () => {
     }
   };
   
-  const UserStatus: React.FC<{ user: UserProfile }> = ({ user }) => {
-    if (user.is_blocked) return <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-500/20 text-red-300">{t('admin.statusBlocked')}</span>;
-    if (user.has_lifetime_access) return <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-500/20 text-green-300">{t('admin.statusLifetime')}</span>;
-    return <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-500/20 text-blue-300">{t('admin.statusActive')}</span>;
-  };
-
   return (
     <div className="animate-fadeIn">
       <section className="relative py-20 md:py-24 text-pure-white bg-corporate-dark">

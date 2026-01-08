@@ -1,30 +1,39 @@
-import React, { ErrorInfo, ReactNode } from 'react';
 
-interface Props {
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+
+interface ErrorBoundaryProps {
   children?: ReactNode;
 }
 
-interface State {
+interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
 }
 
-class ErrorBoundary extends React.Component<Props, State> {
-  public state: State = {
-    hasError: false,
-    error: null,
-  };
+// FIX: Explicitly extend Component from 'react' and use a constructor to ensure that 'this.props' and 'this.state' are correctly identified as members of the class instance by the TypeScript compiler.
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null,
+    };
+  }
 
-  public static getDerivedStateFromError(error: Error): State {
+  public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // Log the error to the console.
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  public render() {
+  public render(): ReactNode {
+    // FIX: Accessing state inherited from Component.
     if (this.state.hasError) {
+      // You can render any custom fallback UI
       return (
         <div className="min-h-screen flex items-center justify-center bg-corporate-dark text-pure-white p-6">
           <div className="max-w-md w-full bg-gray-900/50 rounded-xl shadow-2xl p-8 border border-red-500/50 backdrop-blur-md">
@@ -32,6 +41,7 @@ class ErrorBoundary extends React.Component<Props, State> {
             <p className="text-gray-300 mb-6 font-inter">
               Ha ocurrido un error inesperado en la aplicación. Por favor, intenta recargar la página.
             </p>
+            {/* FIX: Safely accessing error message from the state. */}
             {this.state.error && (
                 <div className="bg-black/30 p-4 rounded-lg text-xs text-red-300 font-mono mb-6 overflow-auto max-h-40">
                     {this.state.error.message}
@@ -48,6 +58,7 @@ class ErrorBoundary extends React.Component<Props, State> {
       );
     }
 
+    // FIX: Accessing children through this.props, which is now correctly recognized by TypeScript on the class instance inherited from Component.
     return this.props.children;
   }
 }

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuote } from '../contexts/QuoteContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -12,9 +13,14 @@ const categories = [
     { titleKey: 'marketplace.cat6Title', items: ['marketplace.cat6Item1', 'marketplace.cat6Item2', 'marketplace.cat6Item3', 'marketplace.cat6Item4']},
 ];
 
-const AccordionItem: React.FC<{ category: typeof categories[0], open: boolean, onToggle: () => void }> = ({ category, open, onToggle }) => {
+const AccordionItem: React.FC<{ 
+  category: typeof categories[0], 
+  open: boolean, 
+  onToggle: () => void,
+  selectedProducts: string[],
+  onToggleProduct: (key: string) => void
+}> = ({ category, open, onToggle, selectedProducts, onToggleProduct }) => {
     const { t } = useLanguage();
-    const { selectedProducts, toggleProduct } = useQuote();
     
     return (
         <div className="border-b border-gray-700">
@@ -34,7 +40,7 @@ const AccordionItem: React.FC<{ category: typeof categories[0], open: boolean, o
                                 type="checkbox"
                                 className="h-5 w-5 rounded bg-gray-700 border-gray-600 text-tech-cyan focus:ring-tech-cyan"
                                 checked={selectedProducts.includes(itemKey)}
-                                onChange={() => toggleProduct(itemKey)}
+                                onChange={() => onToggleProduct(itemKey)}
                             />
                             <span className="text-gray-300">{t(itemKey)}</span>
                         </label>
@@ -46,7 +52,7 @@ const AccordionItem: React.FC<{ category: typeof categories[0], open: boolean, o
 };
 
 const QuoteRequestModal: React.FC = () => {
-    const { isModalOpen, closeModal, selectedProducts, clearProducts } = useQuote();
+    const { isModalOpen, closeModal, selectedProducts, toggleProduct, clearProducts } = useQuote();
     const { t } = useLanguage();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -85,7 +91,7 @@ const QuoteRequestModal: React.FC = () => {
             
             setStatus('success');
             clearProducts();
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             setStatus('error');
         }
@@ -152,7 +158,14 @@ const QuoteRequestModal: React.FC = () => {
                                     <h3 className="text-lg font-semibold text-gray-200 mt-4 mb-2">{t('quote.productsTitle')}</h3>
                                     <div className="border border-gray-700 rounded-lg">
                                         {categories.map(cat => (
-                                            <AccordionItem key={cat.titleKey} category={cat} open={openAccordion === cat.titleKey} onToggle={() => handleToggleAccordion(cat.titleKey)} />
+                                            <AccordionItem 
+                                              key={cat.titleKey} 
+                                              category={cat} 
+                                              open={openAccordion === cat.titleKey} 
+                                              onToggle={() => handleToggleAccordion(cat.titleKey)}
+                                              selectedProducts={selectedProducts}
+                                              onToggleProduct={toggleProduct}
+                                            />
                                         ))}
                                     </div>
                                 </div>

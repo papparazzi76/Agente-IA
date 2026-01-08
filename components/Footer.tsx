@@ -4,6 +4,20 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { documentContents } from '../constants';
 
+const Logo: React.FC = () => (
+  <div className="flex items-center py-1">
+    <img 
+      src="/logo.png" 
+      alt="Agente IA Logo" 
+      className="h-10 w-auto object-contain transition-opacity hover:opacity-80"
+      onError={(e) => {
+        const target = e.target as HTMLImageElement;
+        target.src = 'https://i.ibb.co/vzY1kYV/logo-agente-ia.png';
+      }}
+    />
+  </div>
+);
+
 const InstagramIcon: React.FC = () => (
   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
     <path fillRule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-3.25-8a3.25 3.25 0 116.5 0 3.25 3.25 0 01-6.5 0zm5.25 0a2 2 0 10-4 0 2 2 0 004 0zm1.75-4.5a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
@@ -49,9 +63,9 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sequential-fade-in">
           <div className="col-span-1 md:col-span-1" style={{ animationDelay: '100ms' }}>
             <Link to="/">
-              <img src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/Logo/logo-agente-ia.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL2xvZ28tYWdlbnRlLWlhLnBuZyIsImlhdCI6MTc2MjUxNjgyMSwiZXhwIjoxNzk0MDUyODIxfQ.jiXez7ZkGffdzjiuCdmF2QtuMAkDwVFXCOrUB9b6WlE" alt="AgenteIA Logo" className="h-24 w-auto" />
+              <Logo />
             </Link>
-            <p className="text-sm text-gray-400 mt-2">
+            <p className="text-sm text-gray-400 mt-4">
               {t('footer.tagline')}
             </p>
             <div className="flex space-x-4 mt-6">

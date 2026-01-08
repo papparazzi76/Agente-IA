@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import AdCopyGenerator from '../components/ai-tools/AdCopyGenerator';
@@ -9,7 +10,7 @@ import NegotiationSimulator from '../components/ai-tools/NegotiationSimulator';
 import LeadScoringAssistant from '../components/ai-tools/LeadScoringAssistant';
 import MortgageCalculator from '../components/ai-tools/MortgageCalculator';
 
-type ToolId = 'adCopy' | 'image' | 'email' | 'marketInsights' | 'bio' | 'negotiation' | 'leadScoring' | 'mortgageCalculator';
+type ToolId = 'adCopy' | 'image' | 'email' | 'marketInsights' | 'bio' | 'negotiation' | 'leadScoring' | 'mortgageCalculator' | 'legalAssistant' | 'expenseCalculator';
 
 const MortgageIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>;
 const LeadScoringIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125z" /></svg>;
@@ -23,12 +24,59 @@ const LegalIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" view
 const ExpenseIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 3h.008v.008H8.25v-.008zm0 3h.008v.008H8.25v-.008zm3-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zM6 6h12v2.25a2.25 2.25 0 01-2.25 2.25H8.25A2.25 2.25 0 016 8.25V6zM4.5 6a2.25 2.25 0 012.25-2.25h10.5A2.25 2.25 0 0119.5 6v12a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18V6z" /></svg>;
 const ExternalLinkIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1.5 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>;
 
+interface Tool {
+    id: ToolId;
+    icon: React.ReactNode;
+    titleKey: string;
+    descriptionKey: string;
+    href?: string;
+}
+
+const ToolCard: React.FC<{
+  tool: Tool;
+  isActive: boolean;
+  onClick: () => void;
+}> = ({ tool, isActive, onClick }) => {
+  const { t } = useLanguage();
+  
+  const cardContent = (
+    <>
+      <div className="w-16 h-16 mb-5 rounded-lg bg-gray-900/50 border border-tech-blue/30 flex items-center justify-center shadow-inner shadow-black/20 group-hover:bg-gray-700/50 transition-colors duration-300">
+        {tool.icon}
+      </div>
+      <h3 className="font-poppins text-lg font-bold text-pure-white mb-2">{t(tool.titleKey)}</h3>
+      <p className="font-inter text-sm text-gray-400 flex-grow">{t(tool.descriptionKey)}</p>
+    </>
+  );
+  
+  const baseClasses = "text-left p-6 rounded-xl h-full flex flex-col items-start transition-all duration-300 card-glow-border group";
+  const activeClasses = "border-2 border-tech-cyan bg-tech-blue/10";
+  const inactiveClasses = "border-2 border-gray-700 bg-gray-800/50";
+  
+  if (tool.href) {
+    return (
+      <a href={tool.href} target="_blank" rel="noopener noreferrer" className={`${baseClasses} ${inactiveClasses}`}>
+        {cardContent}
+         <div className="flex items-center text-tech-cyan text-sm font-semibold mt-4">
+            Abrir herramienta <ExternalLinkIcon />
+         </div>
+      </a>
+    );
+  }
+
+  return (
+    <button onClick={onClick} className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}>
+      {cardContent}
+    </button>
+  );
+};
+
 const PlaygroundPage: React.FC = () => {
   const { t } = useLanguage();
   const [activeTool, setActiveTool] = useState<ToolId | null>(null);
   const toolContainerRef = useRef<HTMLDivElement>(null);
 
-  const tools = [
+  const tools: Tool[] = [
     { id: 'mortgageCalculator', icon: <MortgageIcon />, titleKey: 'playground.mortgageCalculator.title', descriptionKey: 'playground.mortgageCalculator.description' },
     { id: 'leadScoring', icon: <LeadScoringIcon />, titleKey: 'playground.leadScoringAssistant.title', descriptionKey: 'playground.leadScoringAssistant.description' },
     { id: 'negotiation', icon: <NegotiationIcon />, titleKey: 'playground.negotiationSimulator.title', descriptionKey: 'playground.negotiationSimulator.description' },
@@ -37,8 +85,8 @@ const PlaygroundPage: React.FC = () => {
     { id: 'image', icon: <ImageIcon />, titleKey: 'playground.imageGenerator.title', descriptionKey: 'playground.imageGenerator.description' },
     { id: 'email', icon: <EmailIcon />, titleKey: 'playground.emailComposer.title', descriptionKey: 'playground.emailComposer.description' },
     { id: 'marketInsights', icon: <MarketIcon />, titleKey: 'playground.marketInsightsGenerator.title', descriptionKey: 'playground.marketInsightsGenerator.description' },
-    { id: 'legalAssistant', icon: <LegalIcon />, titleKey: 'playground.legalAssistantTitle', descriptionKey: 'playground.legalAssistantDescription', href: 'https://dimgrey-mink-513983.hostingersite.com/' },
-    { id: 'expenseCalculator', icon: <ExpenseIcon />, titleKey: 'playground.expenseCalculatorTitle', descriptionKey: 'playground.expenseCalculatorDescription', href: 'https://mistyrose-crow-572702.hostingersite.com/' },
+    { id: 'legalAssistant' as any, icon: <LegalIcon />, titleKey: 'playground.legalAssistantTitle', descriptionKey: 'playground.legalAssistantDescription', href: 'https://dimgrey-mink-513983.hostingersite.com/' },
+    { id: 'expenseCalculator' as any, icon: <ExpenseIcon />, titleKey: 'playground.expenseCalculatorTitle', descriptionKey: 'playground.expenseCalculatorDescription', href: 'https://mistyrose-crow-572702.hostingersite.com/' },
   ];
   
   useEffect(() => {
@@ -65,48 +113,6 @@ const PlaygroundPage: React.FC = () => {
       default: return null;
     }
   };
-
-  // FIX: Explicitly typed the props for the locally-defined `ToolCard` component.
-  // This resolves a TypeScript error where the special `key` prop from a `.map()` was being
-  // incorrectly treated as a regular prop because TypeScript could not properly infer
-  // that `ToolCard` was a React component without explicit types.
-  const ToolCard: React.FC<{
-    tool: (typeof tools)[number];
-    isActive: boolean;
-    onClick: () => void;
-  }> = ({ tool, isActive, onClick }) => {
-    const cardContent = (
-      <>
-        <div className="w-16 h-16 mb-5 rounded-lg bg-gray-900/50 border border-tech-blue/30 flex items-center justify-center shadow-inner shadow-black/20 group-hover:bg-gray-700/50 transition-colors duration-300">
-          {tool.icon}
-        </div>
-        <h3 className="font-poppins text-lg font-bold text-pure-white mb-2">{t(tool.titleKey)}</h3>
-        <p className="font-inter text-sm text-gray-400 flex-grow">{t(tool.descriptionKey)}</p>
-      </>
-    );
-    
-    const baseClasses = "text-left p-6 rounded-xl h-full flex flex-col items-start transition-all duration-300 card-glow-border group";
-    const activeClasses = "border-2 border-tech-cyan bg-tech-blue/10";
-    const inactiveClasses = "border-2 border-gray-700 bg-gray-800/50";
-    
-    if (tool.href) {
-      return (
-        <a href={tool.href} target="_blank" rel="noopener noreferrer" className={`${baseClasses} ${inactiveClasses}`}>
-          {cardContent}
-           <div className="flex items-center text-tech-cyan text-sm font-semibold mt-4">
-              Abrir herramienta <ExternalLinkIcon />
-           </div>
-        </a>
-      );
-    }
-
-    return (
-      <button onClick={onClick} className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}>
-        {cardContent}
-      </button>
-    );
-  };
-
 
   return (
     <div className="animate-fadeIn">

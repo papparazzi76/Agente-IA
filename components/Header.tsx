@@ -3,6 +3,20 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
+const Logo: React.FC = () => (
+  <div className="flex items-center py-1">
+    <img 
+      src="/logo.png" 
+      alt="Agente IA Logo" 
+      className="h-12 w-auto object-contain transition-transform hover:scale-105"
+      onError={(e) => {
+        const target = e.target as HTMLImageElement;
+        target.src = 'https://i.ibb.co/vzY1kYV/logo-agente-ia.png'; // Fallback link
+      }}
+    />
+  </div>
+);
+
 const LanguageSwitcher: React.FC = () => {
   const { language, setLanguage } = useLanguage();
 
@@ -42,8 +56,8 @@ const Header: React.FC = () => {
     <header className="bg-transparent backdrop-blur-md sticky top-0 z-50 border-b border-tech-blue/30 shadow-[0_4px_30px_rgba(0,191,255,0.1)]">
       <nav className="container mx-auto px-6 py-2 relative">
         <div className="flex items-center justify-between">
-          <NavLink to="/" className="transition-transform hover:scale-105">
-            <img src="https://essjcgcsssyfwkqlshkc.supabase.co/storage/v1/object/sign/Logo/logo-agente-ia.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iY2I2NzRiZi0zZmI5LTQ0NWEtOTJlNi0yNDcyOGQyMzg4M2UiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJMb2dvL2xvZ28tYWdlbnRlLWlhLnBuZyIsImlhdCI6MTc2MjUxNjgyMSwiZXhwIjoxNzk0MDUyODIxfQ.jiXez7ZkGffdzjiuCdmF2QtuMAkDwVFXCOrUB9b6WlE" alt="AgenteIA Logo" className="h-24 w-auto" />
+          <NavLink to="/">
+            <Logo />
           </NavLink>
           <div className="hidden md:flex items-center space-x-4">
             <NavLink to="/" className={navLinkClass}>{t('header.navHome')}</NavLink>

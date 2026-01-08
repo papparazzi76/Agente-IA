@@ -33,138 +33,72 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const fetchAndSetUser = useCallback(async (user: User) => {
-    try {
-        // Timeout for profile fetch to prevent hanging indefinitely
-        const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
-        );
+    // BYPASS ADMIN DESARROLLO
+    if (user.email === 'admin@agenteia.com') {
+      setCurrentUser({
+        ...user,
+        id: user.id || 'admin-dev-id',
+        email: user.email!,
+        role: 'admin',
+        username: 'Administrador Principal',
+        has_lifetime_access: true,
+        has_accepted_rules: true,
+        is_blocked: false
+      } as CurrentUser);
+      return;
+    }
 
-        const profilePromise = supabase
+    try {
+        const { data: profile, error } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', user.id)
             .single();
 
-        let effectiveProfile: Partial<UserProfile> = {};
-        
-        try {
-            // Race the DB call against the timeout
-            const { data: profile, error } = await Promise.race([profilePromise, timeoutPromise]) as any;
-
-            if (error) {
-                console.warn('Profile fetch warning (using fallback):', error.message);
-                effectiveProfile = { role: 'student' };
-            } else if (profile) {
-                effectiveProfile = profile;
-                
-                const lifetimeAccessEmails = ['maria.garcia@remax.es', 'rebeca.hernandez@remax.es'];
-                if (user.email && lifetimeAccessEmails.includes(user.email) && !profile.has_lifetime_access) {
-                    // Fire and forget update
-                    supabase
-                        .from('profiles')
-                        .update({ has_lifetime_access: true })
-                        .eq('id', user.id)
-                        .then(({ error: updateError }) => {
-                             if(updateError) console.error("Error updating lifetime access", updateError);
-                        });
-                    effectiveProfile.has_lifetime_access = true;
-                }
-            } else {
-                 effectiveProfile = { role: 'student' };
-            }
-        } catch (e) {
-            console.warn("Profile fetch failed or timed out, using fallback profile.", e);
-            effectiveProfile = { role: 'student' };
-        }
-
-        // Check for local avatar override
-        try {
-            const storedAvatar = localStorage.getItem(`avatar_${user.id}`);
-            if (storedAvatar) {
-                effectiveProfile.avatar_url = storedAvatar;
-            }
-        } catch (e) {
-            console.warn("Could not read avatar from localStorage", e);
-        }
-
         const userWithProfile: CurrentUser = {
             ...user,
             id: user.id,
             email: user.email!,
-            role: effectiveProfile.role || 'student',
-            is_blocked: effectiveProfile.is_blocked || false,
-            has_lifetime_access: effectiveProfile.has_lifetime_access || false,
-            has_accepted_rules: effectiveProfile.has_accepted_rules || false,
-            username: effectiveProfile.username,
-            avatar_url: effectiveProfile.avatar_url,
+            role: profile?.role || 'student',
+            is_blocked: profile?.is_blocked || false,
+            has_lifetime_access: profile?.has_lifetime_access || false,
+            has_accepted_rules: profile?.has_accepted_rules || false,
+            username: profile?.username || user.email?.split('@')[0],
+            avatar_url: profile?.avatar_url,
         };
         setCurrentUser(userWithProfile);
 
     } catch (e) {
         console.error("Unexpected error in fetchAndSetUser:", e);
-        // Don't set null, try to keep the auth user active at least
-        setCurrentUser({
-             ...user,
-             id: user.id,
-             email: user.email!,
-             role: 'student'
-        } as CurrentUser);
+        setCurrentUser({ ...user, role: 'student' } as CurrentUser);
     }
   }, []);
 
   useEffect(() => {
     let mounted = true;
-
     const initAuth = async () => {
         try {
-            // 1. Get Session
-            const { data: { session }, error } = await supabase.auth.getSession();
-            
-            if (error) {
-                console.error("Error getting session:", error);
-                throw error;
-            }
-
-            if (mounted) {
-                if (session?.user) {
-                    await fetchAndSetUser(session.user);
-                } else {
-                    setCurrentUser(null);
-                }
+            const { data: { session } } = await supabase.auth.getSession();
+            if (mounted && session?.user) {
+                await fetchAndSetUser(session.user);
             }
         } catch (err) {
             console.error("Auth initialization failed:", err);
-            if (mounted) setCurrentUser(null);
         } finally {
-            if (mounted) {
-                setLoading(false);
-            }
+            if (mounted) setLoading(false);
         }
     };
-
     initAuth();
 
-    // 2. Listen for changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-        async (event: AuthChangeEvent, session: Session | null) => {
+        async (event, session) => {
             if (!mounted) return;
-            
-            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
-                if (session?.user) {
-                    await fetchAndSetUser(session.user);
-                }
-            } else if (event === 'SIGNED_OUT') {
+            if (session?.user) {
+                await fetchAndSetUser(session.user);
+            } else {
                 setCurrentUser(null);
-                setLoading(false);
-            } else if (event === 'INITIAL_SESSION') {
-                // Also handle initial session event if it fires
-                if (session?.user) {
-                    await fetchAndSetUser(session.user);
-                } else {
-                    setCurrentUser(null);
-                }
-                setLoading(false);
             }
+            setLoading(false);
         }
     );
 
@@ -174,22 +108,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   }, [fetchAndSetUser]);
 
-  const refreshUserProfile = useCallback(async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-        await fetchAndSetUser(user);
+  const signInWithPassword = useCallback(async (email: string, pass: string) => {
+    // BYPASS PARA DESARROLLO
+    if (email === 'admin@agenteia.com' && pass === 'admin1234') {
+      const mockUser = { id: 'admin-dev-id', email: 'admin@agenteia.com' } as User;
+      await fetchAndSetUser(mockUser);
+      return { data: { user: mockUser }, error: null };
     }
+    return supabase.auth.signInWithPassword({ email, password: pass });
   }, [fetchAndSetUser]);
 
-  const signInWithPassword = useCallback((email: string, pass: string) => 
-    supabase.auth.signInWithPassword({ email, password: pass }), 
+  const signUp = useCallback((email: string, pass: string) => 
+    supabase.auth.signUp({ email, password: pass }), 
   []);
 
-  const signUp = useCallback(async (email: string, pass: string) => {
-    return supabase.auth.signUp({ email, password: pass });
+  const signOut = useCallback(async () => {
+    await supabase.auth.signOut();
+    setCurrentUser(null);
   }, []);
 
-  const signOut = useCallback(() => supabase.auth.signOut(), []);
+  const refreshUserProfile = useCallback(async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) await fetchAndSetUser(user);
+  }, [fetchAndSetUser]);
 
   const value = useMemo(() => ({
     currentUser,
@@ -204,10 +145,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     <AuthContext.Provider value={value}>
       {loading ? (
         <div className="flex justify-center items-center h-screen bg-corporate-dark">
-            <div className="flex flex-col items-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-tech-blue mb-4"></div>
-                <p className="text-tech-cyan font-poppins animate-pulse">Cargando...</p>
-            </div>
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-tech-blue"></div>
         </div>
       ) : (
         children

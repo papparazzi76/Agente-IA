@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef, RefObject } from 'react';
 
 /**
@@ -5,8 +6,6 @@ import { useState, useEffect, useRef, RefObject } from 'react';
  * @param options - IntersectionObserver options.
  * @returns A tuple containing the ref to attach to the element and a boolean indicating if it's visible.
  */
-// Made the hook generic to accept any HTMLElement type. This resolves type errors
-// when applying the ref to specific elements like divs or sections.
 export const useScrollAnimation = <T extends HTMLElement>(options?: IntersectionObserverInit): [RefObject<T>, boolean] => {
   const elementRef = useRef<T>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -14,14 +13,13 @@ export const useScrollAnimation = <T extends HTMLElement>(options?: Intersection
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // When the element is intersecting, update the state and unobserve
         if (entry.isIntersecting) {
           setIsVisible(true);
           observer.unobserve(entry.target);
         }
       },
       {
-        threshold: 0.1, // Trigger when 10% of the element is visible
+        threshold: 0.1,
         ...options,
       }
     );
@@ -31,7 +29,6 @@ export const useScrollAnimation = <T extends HTMLElement>(options?: Intersection
       observer.observe(currentElement);
     }
 
-    // Cleanup observer on component unmount
     return () => {
       if (currentElement) {
         observer.unobserve(currentElement);
