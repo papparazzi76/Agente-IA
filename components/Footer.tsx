@@ -7,12 +7,14 @@ import { documentContents } from '../constants';
 const Logo: React.FC = () => (
   <div className="flex items-center py-1">
     <img 
-      src="/logo.png" 
+      src="https://images.mirrorful.sh/66986e108eb3c77d611f7ed3/1739832742917-logo.png" 
       alt="Agente IA Logo" 
-      className="h-10 w-auto object-contain transition-opacity hover:opacity-80"
+      className="h-12 w-auto object-contain transition-opacity hover:opacity-80"
       onError={(e) => {
         const target = e.target as HTMLImageElement;
-        target.src = 'https://i.ibb.co/vzY1kYV/logo-agente-ia.png';
+        if (target.src !== "/logo.png") {
+            target.src = "/logo.png";
+        }
       }}
     />
   </div>

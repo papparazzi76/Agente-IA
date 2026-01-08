@@ -76,7 +76,7 @@ const HomePage: React.FC = () => {
               </div>
               <div className="relative h-80 md:h-96 w-full flex items-center justify-center mt-12 md:mt-0 group cursor-pointer" onClick={() => navigate('/playground')}>
                   <img 
-                      src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?auto=format&fit=crop&q=80&w=1000"
+                      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000"
                       alt="Playground IA"
                       className="relative z-10 w-full max-w-lg rounded-lg shadow-2xl shadow-tech-blue/20 border border-tech-blue/30 transform transition-transform duration-500 group-hover:scale-105"
                       loading="lazy" decoding="async"
@@ -92,7 +92,7 @@ const HomePage: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-16 items-center">
               <div className="relative h-80 md:h-96 w-full flex items-center justify-center mt-12 md:mt-0 md:order-2">
                    <img 
-                      src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000" 
+                      src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=1000" 
                       alt="Marketplace de Servicios"
                       className="relative z-10 w-full max-w-lg rounded-lg shadow-2xl shadow-tech-cyan/20 border border-tech-cyan/30 transform transition-transform hover:scale-105"
                       loading="lazy" decoding="async"

@@ -1,5 +1,5 @@
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { ErrorInfo, ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
   children?: ReactNode;
@@ -10,15 +10,13 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
-// FIX: Explicitly extend Component from 'react' and use a constructor to ensure that 'this.props' and 'this.state' are correctly identified as members of the class instance by the TypeScript compiler.
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: null,
-    };
-  }
+// FIX: Explicitly extend React.Component and use property initializers to ensure 'state' and 'props' are correctly typed and recognized by TypeScript.
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  // FIX: Declaring and initializing state at the class level instead of the constructor for better TS inference.
+  public state: ErrorBoundaryState = {
+    hasError: false,
+    error: null,
+  };
 
   public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     // Update state so the next render will show the fallback UI.
@@ -31,7 +29,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   public render(): ReactNode {
-    // FIX: Accessing state inherited from Component.
+    // FIX: 'this.state' is now correctly recognized by the TypeScript compiler as having 'hasError' and 'error'.
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return (
@@ -41,7 +39,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             <p className="text-gray-300 mb-6 font-inter">
               Ha ocurrido un error inesperado en la aplicación. Por favor, intenta recargar la página.
             </p>
-            {/* FIX: Safely accessing error message from the state. */}
+            {/* FIX: Correctly access the error message from state after checking that it is not null. */}
             {this.state.error && (
                 <div className="bg-black/30 p-4 rounded-lg text-xs text-red-300 font-mono mb-6 overflow-auto max-h-40">
                     {this.state.error.message}
@@ -58,7 +56,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       );
     }
 
-    // FIX: Accessing children through this.props, which is now correctly recognized by TypeScript on the class instance inherited from Component.
+    // FIX: 'this.props' is now correctly recognized as having 'children'.
     return this.props.children;
   }
 }
